@@ -30,9 +30,17 @@ type Mutation {
   updateBook(data: UpdateBookInput!): Book!
 }
 
+type PaginatedBooks {
+  data: [Book!]!
+  limit: Int!
+  page: Int!
+  total: Int!
+  totalPages: Int!
+}
+
 type Query {
   book(id: String!): Book
-  books(skip: Int, take: Int, where: BookWhereInput): [Book!]!
+  findAllBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   hello: String!
 }
 

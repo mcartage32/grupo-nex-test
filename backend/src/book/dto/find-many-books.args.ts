@@ -3,12 +3,12 @@ import { BookWhereInput } from './book-where.input.js';
 
 @ArgsType()
 export class FindManyBooksArgs {
+  @Field(() => Int, { nullable: true, defaultValue: 1 })
+  page?: number;
+
+  @Field(() => Int, { nullable: true, defaultValue: 10 })
+  limit?: number;
+
   @Field(() => BookWhereInput, { nullable: true })
   where?: BookWhereInput;
-
-  @Field(() => Int, { nullable: true })
-  skip?: number;
-
-  @Field(() => Int, { nullable: true })
-  take?: number;
 }

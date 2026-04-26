@@ -4,6 +4,7 @@ import { Book } from './book.model.js';
 import { CreateBookInput } from './dto/create-book.input.js';
 import { UpdateBookInput } from './dto/update-book.input.js';
 import { FindManyBooksArgs } from './dto/find-many-books.args.js';
+import { PaginatedBooks } from './dto/paginated-books.output.js';
 
 @Resolver(() => Book)
 export class BookResolver {
@@ -14,8 +15,8 @@ export class BookResolver {
     return this.bookService.create(data);
   }
 
-  @Query(() => [Book])
-  books(@Args() args: FindManyBooksArgs) {
+  @Query(() => PaginatedBooks)
+  findAllBooks(@Args() args: FindManyBooksArgs) {
     return this.bookService.findAll(args);
   }
 
