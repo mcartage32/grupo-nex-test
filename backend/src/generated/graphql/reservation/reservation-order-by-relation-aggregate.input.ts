@@ -1,9 +1,0 @@
-import { Field } from '@nestjs/graphql';
-import { InputType } from '@nestjs/graphql';
-import { SortOrder } from '../prisma/sort-order.enum.js';
-
-@InputType()
-export class ReservationOrderByRelationAggregateInput {
-  @Field(() => SortOrder, { nullable: true })
-  _count?: `${SortOrder}`;
-}
