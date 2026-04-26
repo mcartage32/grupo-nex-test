@@ -41,7 +41,6 @@ type PaginatedBooks {
 type Query {
   book(id: String!): Book
   findAllBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
-  hello: String!
 }
 
 input UpdateBookInput {
