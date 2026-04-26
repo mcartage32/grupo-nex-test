@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Book {
+  id          String        @id
+  title       String        @unique
+  author      String
+  createdAt   DateTime      @default(now())
+  Reservation Reservation[]
+}
+
+model Reservation {
+  id              String   @id
+  userId          String
+  bookId          String
+  reservationDate DateTime @default(now())
+  returnDate      DateTime
+  returned        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  Book            Book     @relation(fields: [bookId], references: [id])
+  User            User     @relation(fields: [userId], references: [id])
+
+  @@index([bookId])
+  @@index([userId])
+}
+
+model User {
+  id          String        @id
+  name        String
+  email       String        @unique
+  createdAt   DateTime      @default(now())
+  Reservation Reservation[]
+}
