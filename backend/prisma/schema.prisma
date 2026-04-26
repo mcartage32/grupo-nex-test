@@ -8,32 +8,35 @@ datasource db {
 }
 
 model Book {
-  id          String        @id
-  title       String        @unique
-  author      String
-  createdAt   DateTime      @default(now())
-  Reservation Reservation[]
+  id           String         @id @default(uuid())
+  title        String         @unique
+  author       String
+  createdAt    DateTime       @default(now())
+
+  reservations Reservation[]
 }
 
 model Reservation {
-  id              String   @id
+  id              String   @id @default(uuid())
   userId          String
   bookId          String
   reservationDate DateTime @default(now())
   returnDate      DateTime
   returned        Boolean  @default(false)
   createdAt       DateTime @default(now())
-  Book            Book     @relation(fields: [bookId], references: [id])
-  User            User     @relation(fields: [userId], references: [id])
+
+  book Book @relation(fields: [bookId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@index([bookId])
   @@index([userId])
 }
 
 model User {
-  id          String        @id
-  name        String
-  email       String        @unique
-  createdAt   DateTime      @default(now())
-  Reservation Reservation[]
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  createdAt    DateTime       @default(now())
+
+  reservations Reservation[]
 }
