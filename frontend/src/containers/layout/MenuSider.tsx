@@ -1,10 +1,12 @@
 import { Menu } from "antd";
-import { VscDashboard } from "react-icons/vsc";
-import { CiCalendarDate } from "react-icons/ci";
-import { HiOutlineDocumentReport } from "react-icons/hi";
-import { TbLogout } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { PUBLIC_ROUTE } from "@/constants";
+import { IoHomeOutline } from "react-icons/io5";
+import { FaRegUser } from "react-icons/fa";
+import { FaBook } from "react-icons/fa";
+import { FaRegCalendarCheck } from "react-icons/fa";
+import { LuUserRoundCheck } from "react-icons/lu";
+import { LuNotebookPen } from "react-icons/lu";
 
 interface Props {
   selectedKey: string;
@@ -24,9 +26,13 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
         navigate(PUBLIC_ROUTE.USERS);
         break;
       case "3":
-        navigate(PUBLIC_ROUTE.RESERVATIONS_GENERAL);
+        navigate(PUBLIC_ROUTE.BOOKS);
         break;
-      case "4":
+      case "5":
+        navigate(PUBLIC_ROUTE.RESERVATIONS_BY_USER);
+        break;
+      case "6":
+        navigate(PUBLIC_ROUTE.RESERVATIONS_BY_BOOK);
         break;
     }
   };
@@ -43,23 +49,35 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
       items={[
         {
           key: "1",
-          icon: <VscDashboard size={22} />,
-          label: "Dashboard",
+          icon: <IoHomeOutline size={22} />,
+          label: "Home",
         },
         {
           key: "2",
-          icon: <CiCalendarDate size={22} />,
-          label: "Citas",
+          icon: <FaRegUser size={22} />,
+          label: "Usuarios",
         },
         {
           key: "3",
-          icon: <HiOutlineDocumentReport size={18} />,
-          label: "Reportes",
+          icon: <FaBook size={18} />,
+          label: "Libros",
         },
         {
           key: "4",
-          icon: <TbLogout size={18} />,
-          label: "Cerrar sesión",
+          icon: <FaRegCalendarCheck size={18} />,
+          label: "Reservas",
+          children: [
+            {
+              key: "5",
+              icon: <LuUserRoundCheck size={18} />,
+              label: "Por usuario",
+            },
+            {
+              key: "6",
+              icon: <LuNotebookPen size={18} />,
+              label: "Por libro",
+            },
+          ],
         },
       ]}
     />
