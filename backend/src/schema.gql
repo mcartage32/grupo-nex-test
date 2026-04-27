@@ -19,6 +19,13 @@ input CreateBookInput {
   title: String!
 }
 
+input CreateReservationInput {
+  bookId: String!
+  reservationDate: DateTime!
+  returnDate: DateTime!
+  userId: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -31,8 +38,10 @@ scalar DateTime
 
 type Mutation {
   createBook(data: CreateBookInput!): Book!
+  createReservation(data: CreateReservationInput!): Reservation!
   createUser(data: CreateUserInput!): User!
   deleteBook(id: String!): Book!
+  returnBook(reservationId: String!): Reservation!
   updateBook(data: UpdateBookInput!): Book!
 }
 
@@ -53,10 +62,35 @@ type PaginatedUsers {
 }
 
 type Query {
+  allReservations(filter: ReservationFilterInput): [Reservation!]!
+  availableBooks: [Book!]!
   book(id: String!): Book
   findAllBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   findAllUsers(limit: Int = 10, page: Int = 1): PaginatedUsers!
+  reservationsByBook(bookId: String!, filter: ReservationFilterInput): [Reservation!]!
+  reservationsByUser(filter: ReservationFilterInput, userId: String!): [Reservation!]!
   user(id: String!): User
+}
+
+type Reservation {
+  book: Book!
+  bookId: String!
+  createdAt: DateTime!
+  daysLeft: Int!
+  id: ID!
+  isLate: Boolean!
+  lateDays: Int!
+  reservationDate: DateTime!
+  returnDate: DateTime!
+  returned: Boolean!
+  returnedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+input ReservationFilterInput {
+  endDate: DateTime
+  startDate: DateTime
 }
 
 input UpdateBookInput {
@@ -66,8 +100,10 @@ input UpdateBookInput {
 }
 
 type User {
+  activeReservations: Float!
   createdAt: DateTime!
   email: String!
   id: ID!
+  isBanned: Boolean!
   name: String!
 }

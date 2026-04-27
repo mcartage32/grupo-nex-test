@@ -14,6 +14,6 @@ export class User {
   @Field()
   createdAt!: Date;
 
-  //   @Field(() => [Reservation], { nullable: true })
-  //   reservations?: Reservation[];
+  @Field()
+  isBanned!: boolean;
 }
