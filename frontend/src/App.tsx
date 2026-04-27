@@ -15,6 +15,9 @@ function App() {
   return (
     <>
       <section id="center">
+        <h1 className="text-3xl font-bold underline">
+          prueba de tailwindcss con vite y react
+        </h1>
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
           <img src={reactLogo} className="framework" alt="React logo" />
