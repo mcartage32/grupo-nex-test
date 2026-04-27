@@ -1,5 +1,6 @@
 import { Layout, theme } from "antd";
 import { Outlet, useLocation } from "react-router-dom";
+import AvaliableBooks from "../pages/AvaliableBooks";
 
 const { Content } = Layout;
 
@@ -25,7 +26,7 @@ export default function ContentCustom() {
           borderRadius: borderRadiusLG,
         }}
       >
-        {isHome && <div>Bienvenido</div>}
+        {isHome && <AvaliableBooks />}
         <Outlet />
       </div>
     </Content>
