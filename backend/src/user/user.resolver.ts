@@ -35,6 +35,16 @@ export class UserResolver {
     return this.userService.findOne(id);
   }
 
+  @Query(() => [User])
+  availableUsers() {
+    return this.userService.findAvailableUsers();
+  }
+
+  @Query(() => [User])
+  usersWithoutPagination() {
+    return this.userService.findAllNoPagination();
+  }
+
   @ResolveField(() => Number)
   activeReservations(@Parent() user: User) {
     return this.prisma.reservation.count({

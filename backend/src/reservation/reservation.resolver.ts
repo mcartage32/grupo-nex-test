@@ -47,11 +47,6 @@ export class ReservationResolver {
     return this.service.reservationsByUser(userId, filter);
   }
 
-  @Query(() => [Book])
-  availableBooks() {
-    return this.service.availableBooks();
-  }
-
   @Query(() => [Reservation])
   allReservations(
     @Args('filter', { nullable: true }) filter?: ReservationFilterInput,

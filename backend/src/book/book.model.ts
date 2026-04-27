@@ -13,4 +13,7 @@ export class Book {
 
   @Field()
   createdAt!: Date;
+
+  @Field()
+  isAvailable!: boolean;
 }

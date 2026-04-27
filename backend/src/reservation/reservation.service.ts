@@ -222,21 +222,6 @@ export class ReservationService {
     );
   }
 
-  async availableBooks() {
-    return this.prisma.book.findMany({
-      where: {
-        reservations: {
-          none: {
-            returned: false,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  }
-
   async allReservations(filter?: ReservationFilterInput) {
     const where: Prisma.ReservationWhereInput = {
       reservationDate: {

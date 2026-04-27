@@ -6,6 +6,7 @@ type Book {
   author: String!
   createdAt: DateTime!
   id: ID!
+  isAvailable: Boolean!
   title: String!
 }
 
@@ -64,12 +65,15 @@ type PaginatedUsers {
 type Query {
   allReservations(filter: ReservationFilterInput): [Reservation!]!
   availableBooks: [Book!]!
+  availableUsers: [User!]!
   book(id: String!): Book
+  booksWithoutPagination: [Book!]!
   findAllBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   findAllUsers(limit: Int = 10, page: Int = 1): PaginatedUsers!
   reservationsByBook(bookId: String!, filter: ReservationFilterInput): [Reservation!]!
   reservationsByUser(filter: ReservationFilterInput, userId: String!): [Reservation!]!
   user(id: String!): User
+  usersWithoutPagination: [User!]!
 }
 
 type Reservation {
@@ -83,7 +87,7 @@ type Reservation {
   reservationDate: DateTime!
   returnDate: DateTime!
   returned: Boolean!
-  returnedAt: DateTime!
+  returnedAt: DateTime
   user: User!
   userId: String!
 }

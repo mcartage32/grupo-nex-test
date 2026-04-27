@@ -40,4 +40,21 @@ export class UserService {
       where: { id },
     });
   }
+
+  findAvailableUsers() {
+    return this.prisma.user.findMany({
+      where: {
+        isBanned: false,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findAllNoPagination() {
+    return this.prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

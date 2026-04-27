@@ -15,7 +15,7 @@ export class BookService {
     });
   }
 
-  findAll(args: FindManyBooksArgs) {
+  async findAll(args: FindManyBooksArgs) {
     const page = args.page ?? 1;
     const limit = args.limit ?? 10;
     const skip = (page - 1) * limit;
@@ -35,21 +35,33 @@ export class BookService {
         : undefined,
     };
 
-    return Promise.all([
+    const [data, total] = await Promise.all([
       this.prisma.book.findMany({
         where,
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: {
+          reservations: {
+            where: {
+              returned: false,
+            },
+          },
+        },
       }),
       this.prisma.book.count({ where }),
-    ]).then(([data, total]) => ({
-      data,
+    ]);
+
+    return {
+      data: data.map((book) => ({
+        ...book,
+        isAvailable: book.reservations.length === 0,
+      })),
       total,
       page,
       limit,
       totalPages: Math.ceil(total / limit),
-    }));
+    };
   }
 
   findOne(id: string) {
@@ -70,6 +82,30 @@ export class BookService {
   remove(id: string) {
     return this.prisma.book.delete({
       where: { id },
+    });
+  }
+
+  async availableBooks() {
+    return this.prisma.book.findMany({
+      where: {
+        reservations: {
+          none: {
+            returned: false,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async findAllNoPagination() {
+    return this.prisma.book.findMany({
+      where: {},
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 }

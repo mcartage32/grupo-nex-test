@@ -23,7 +23,7 @@ export class Reservation {
   @Field()
   createdAt!: Date;
 
-  @Field()
+  @Field({ nullable: true })
   returnedAt?: Date;
 
   // campos calculados para frontend

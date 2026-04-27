@@ -34,4 +34,14 @@ export class BookResolver {
   deleteBook(@Args('id') id: string) {
     return this.bookService.remove(id);
   }
+
+  @Query(() => [Book])
+  availableBooks() {
+    return this.bookService.availableBooks();
+  }
+
+  @Query(() => [Book])
+  booksWithoutPagination() {
+    return this.bookService.findAllNoPagination();
+  }
 }
