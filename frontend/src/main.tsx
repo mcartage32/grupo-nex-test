@@ -1,14 +1,21 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ApolloProvider } from "@apollo/client/react";
-import App from "./App.tsx";
+import { NotificationProvider } from "./components/NotificationCustom.tsx";
+import { ConfigProvider } from "antd";
+import esES from "antd/locale/es_ES";
+import Router from "./router/index.tsx";
 import client from "./graphql/apolloClient";
-import "./index.css";
+import "./main.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <NotificationProvider>
+      <ApolloProvider client={client}>
+        <ConfigProvider locale={esES}>
+          <Router />
+        </ConfigProvider>
+      </ApolloProvider>
+    </NotificationProvider>
   </StrictMode>,
 );
