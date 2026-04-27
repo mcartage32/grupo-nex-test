@@ -35,9 +35,9 @@ export class BookResolver {
     return this.bookService.remove(id);
   }
 
-  @Query(() => [Book])
-  availableBooks() {
-    return this.bookService.availableBooks();
+  @Query(() => PaginatedBooks)
+  availableBooks(@Args() args: FindManyBooksArgs) {
+    return this.bookService.availableBooks(args);
   }
 
   @Query(() => [Book])

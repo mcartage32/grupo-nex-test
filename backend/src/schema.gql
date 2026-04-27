@@ -64,7 +64,7 @@ type PaginatedUsers {
 
 type Query {
   allReservations(filter: ReservationFilterInput): [Reservation!]!
-  availableBooks: [Book!]!
+  availableBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   availableUsers: [User!]!
   book(id: String!): Book
   booksWithoutPagination: [Book!]!

@@ -85,19 +85,38 @@ export class BookService {
     });
   }
 
-  async availableBooks() {
-    return this.prisma.book.findMany({
-      where: {
-        reservations: {
-          none: {
-            returned: false,
-          },
+  async availableBooks(args: FindManyBooksArgs) {
+    const page = args.page ?? 1;
+    const limit = args.limit ?? 10;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.BookWhereInput = {
+      reservations: {
+        none: {
+          returned: false,
         },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.book.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.book.count({ where }),
+    ]);
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findAllNoPagination() {
