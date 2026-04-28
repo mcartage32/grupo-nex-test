@@ -68,7 +68,15 @@ const AvailableBooks = () => {
     <>
       <div className="w-full px-4 md:px-8 py-6">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
-          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
+          <div className="text-center mb-6 px-2">
+            <h1 className="text-2xl md:text-3xl font-bold break-words">
+              Bienvenido a OLECRAM
+            </h1>
+            <p className="text-gray-600 mt-2 text-sm md:text-base break-words">
+              Tu sistema de gestión de reservas de libros
+            </p>
+          </div>
+          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6 break-words px-2">
             Libros disponibles
           </h2>
           <Table
@@ -90,7 +98,7 @@ const AvailableBooks = () => {
               },
             }}
             scroll={{
-              y: "calc(100vh - 300px)",
+              y: "calc(100vh - 360px)",
               x: "max-content",
             }}
           />

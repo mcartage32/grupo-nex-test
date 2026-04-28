@@ -58,7 +58,7 @@ export const getReservationColumns = ({
     render: (_, record) => record.returnDate.toString().split("T")[0],
   },
   {
-    title: "Estado",
+    title: "Estado de la reserva",
     key: "status",
     align: "center",
     render: (_, record) => {

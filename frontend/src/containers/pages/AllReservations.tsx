@@ -49,11 +49,14 @@ const AllReservations = () => {
   return (
     <div className="w-full px-4 md:px-8 py-6">
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
-        <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
+        <h2
+          className="text-xl md:text-2xl font-semibold text-center mb-6"
+          break-words
+        >
           Reservas
         </h2>
         <div className="flex flex-col items-center mb-4">
-          <label className="mb-2 text-sm font-medium text-gray-700">
+          <label className="mb-2 text-sm font-medium text-gray-700 break-words">
             Filtrar por fecha de reserva
           </label>
           <DatePicker.RangePicker

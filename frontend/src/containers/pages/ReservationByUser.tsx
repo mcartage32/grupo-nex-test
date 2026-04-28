@@ -84,7 +84,6 @@ const ReservationByUser = () => {
             onChange={(value) => {
               setSelectedUser(value);
               setCurrentPage(1);
-
               refetch({
                 userId: value,
                 page: 1,
@@ -144,6 +143,8 @@ const ReservationByUser = () => {
                 },
               });
             },
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
             onShowSizeChange: (_, size) => {
               setPageSize(size);
               setCurrentPage(1);
@@ -156,6 +157,10 @@ const ReservationByUser = () => {
                 },
               });
             },
+          }}
+          scroll={{
+            y: "calc(100vh - 300px)",
+            x: "max-content",
           }}
         />
       </div>

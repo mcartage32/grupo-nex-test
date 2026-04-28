@@ -6,6 +6,7 @@ import { FindManyReservationsArgs } from './dto/find-many-reservation.args.js';
 import { ReservationByUserArgs } from './dto/reservation-by-user.args.js';
 import { ReservationByBookArgs } from './dto/reservation-by-book.args.js';
 
+// Tomar la fecha sin el "T" de UTC
 function toDateOnly(date: Date) {
   return date.toISOString().split('T')[0];
 }
@@ -23,6 +24,8 @@ function diffDays(a: string, b: string) {
   );
 }
 
+// Formatear las fechas (sin horas ni minutos) y se agrega los dia de retraso
+// y dias que falta para entregar el libro
 function getReservationMeta(reservation: any) {
   const today = todayColombia();
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
@@ -132,6 +135,8 @@ export class ReservationService {
       throw new BadRequestException('The book has already been returned');
     }
 
+    // Se hacen los calculos de dias si ha sido retrasado en la entrega del libro
+    // para multar al ususario
     const today = todayColombia();
     const returnDate = toDateOnly(new Date(reservation.returnDate));
     const diffDays = Math.floor(
@@ -154,6 +159,7 @@ export class ReservationService {
       include: { book: true, user: true },
     });
 
+    // Si esta retrasado se multa el usuario
     if (isLate) {
       await this.prisma.user.update({
         where: { id: reservation.userId },

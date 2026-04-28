@@ -127,11 +127,15 @@ const AllBooks = () => {
     <>
       <div className="w-full px-4 md:px-8 py-6">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
-          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
+          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6 break-words">
             Todos los libros
           </h2>
           <div className="flex justify-end mb-4">
-            <Button type="primary" onClick={() => setOpenCreateBookModal(true)}>
+            <Button
+              type="primary"
+              className="w-full sm:w-auto min-w-[50px]"
+              onClick={() => setOpenCreateBookModal(true)}
+            >
               Crear libro
             </Button>
           </div>

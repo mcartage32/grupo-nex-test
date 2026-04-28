@@ -64,7 +64,7 @@ const ReservationByBook = () => {
 
   return (
     <div className="w-full px-4 md:px-8 py-6">
-      <div className="bg-white rounded-2xl shadow-lg border p-4 md:p-6">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
         <h2 className="text-xl font-semibold text-center mb-6">
           Reservas por libro
         </h2>
@@ -138,6 +138,8 @@ const ReservationByBook = () => {
                 },
               });
             },
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
             onShowSizeChange: (_, size) => {
               setPageSize(size);
               setCurrentPage(1);
@@ -151,6 +153,10 @@ const ReservationByBook = () => {
                 },
               });
             },
+          }}
+          scroll={{
+            y: "calc(100vh - 300px)",
+            x: "max-content",
           }}
         />
       </div>

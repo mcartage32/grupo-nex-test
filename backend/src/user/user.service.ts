@@ -41,6 +41,7 @@ export class UserService {
     });
   }
 
+  // Devuelve todos los usuarios que nos estan multados
   findAvailableUsers() {
     return this.prisma.user.findMany({
       where: {

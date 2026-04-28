@@ -85,6 +85,8 @@ export class BookService {
     });
   }
 
+  // Trae los libros que no tengan reservas activas
+  // (Ningun libro que tenga reserva en retornado en falso)
   async availableBooks(args: FindManyBooksArgs) {
     const page = args.page ?? 1;
     const limit = args.limit ?? 10;

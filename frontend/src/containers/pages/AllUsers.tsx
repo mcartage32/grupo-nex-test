@@ -62,11 +62,15 @@ const AllUsers = () => {
     <>
       <div className="w-full px-4 md:px-8 py-6">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
-          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
+          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6 break-words">
             Usuarios
           </h2>
-          <div className="flex justify-end mb-4">
-            <Button type="primary" onClick={() => setOpenCreateUserModal(true)}>
+          <div className="flex flex-col sm:flex-row sm:justify-end mb-4">
+            <Button
+              type="primary"
+              className="w-full sm:w-auto min-w-[50px]"
+              onClick={() => setOpenCreateUserModal(true)}
+            >
               Crear usuario
             </Button>
           </div>
