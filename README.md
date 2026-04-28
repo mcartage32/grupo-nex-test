@@ -1,98 +1,235 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# OLECRAM - Sistema de Gestión de Reservas de Libros
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 1. Descripción del Proyecto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+OLECRAM es una aplicación web fullstack diseñada para la gestión de reservas de libros. Permite registrar, consultar y administrar reservas de manera eficiente mediante una arquitectura desacoplada entre frontend y backend.
 
-## Description
+El sistema está construido con tecnologías modernas como **React**, **NestJS**, **GraphQL** y **PostgreSQL**, priorizando escalabilidad, mantenibilidad y buena experiencia de desarrollo.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 2. Estructura del Proyecto
 
-```bash
-$ npm install
+```text
+OLECRAM/
+├── backend/
+│   ├── src/
+│   ├── prisma/
+│   ├── package.json
+│   └── .env
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── .env
+└── README.md
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 3. Tecnologías Utilizadas
 
-# watch mode
-$ npm run start:dev
+### Backend
 
-# production mode
-$ npm run start:prod
+- NestJS
+- GraphQL (Apollo Server)
+- Prisma ORM
+- PostgreSQL
+- class-validator / class-transformer
+
+### Frontend
+
+- React + Vite
+- Apollo Client
+- Ant Design
+- TailwindCSS
+- Zustand
+- React Router
+
+---
+
+## 4. Requisitos Previos
+
+Antes de ejecutar el proyecto, asegúrate de tener instalado:
+
+- Node.js 20+
+- PostgreSQL
+- Bun o npm
+
+---
+
+## 5. Variables de Entorno
+
+### Backend (`/backend/.env`)
+
+```env
+DATABASE_URL="postgresql://root:root@localhost:5432/postgres"
+PORT=3000
 ```
 
-## Run tests
+### Frontend (`/frontend/.env`)
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```env
+VITE_API_URL=http://localhost:3000/graphql
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 6. Instalación y Ejecución
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 6.1 Backend
+
+1. Ir al directorio:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+cd backend
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+2. Instalar dependencias:
 
-## Resources
+```bash
+npm install
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+o
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+bun install
+```
 
-## Support
+3. Generar cliente de Prisma:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+bunx prisma generate
+```
 
-## Stay in touch
+4. Ejecutar migraciones:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+bunx prisma migrate dev
+```
 
-## License
+5. (Opcional) Ejecutar seed:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+bunx prisma db seed
+```
+
+6. Iniciar servidor:
+
+```bash
+npm run start:dev
+```
+
+El backend correrá en:
+
+```
+http://localhost:3000/graphql
+```
+
+---
+
+### 6.2 Frontend
+
+1. Ir al directorio:
+
+```bash
+cd frontend
+```
+
+2. Instalar dependencias:
+
+```bash
+bun install
+```
+
+o
+
+```bash
+npm install
+```
+
+3. Ejecutar proyecto:
+
+```bash
+bun dev
+```
+
+El frontend correrá en:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 7. Scripts Importantes
+
+### Backend
+
+```bash
+npm run start:dev     # Desarrollo
+npm run build         # Build producción
+npm run start:prod    # Ejecutar build
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:studio
+```
+
+### Frontend
+
+```bash
+bun dev               # Desarrollo
+bun build             # Build
+bun preview           # Preview producción
+```
+
+---
+
+## 8. Uso del Sistema
+
+- El frontend consume la API GraphQL del backend.
+- Todas las operaciones (queries/mutations) se realizan mediante Apollo Client.
+- El sistema permite gestionar reservas de libros, incluyendo creación, consulta y eliminación.
+
+---
+
+## 9. Consideraciones Técnicas
+
+- Se utiliza **GraphQL** para mayor flexibilidad en consultas.
+- Prisma maneja la persistencia y migraciones de base de datos.
+- Validaciones implementadas con `class-validator`.
+- Manejo de fechas con librerías modernas como `dayjs`.
+
+---
+
+## 10. Supuestos
+
+- PostgreSQL está corriendo localmente en el puerto 5432.
+- No se implementa autenticación avanzada (puede extenderse).
+- El sistema está pensado para entorno de desarrollo/prueba.
+- No se contemplan roles ni permisos complejos.
+
+---
+
+## 11. Notas Finales
+
+- Asegúrate de tener configurado correctamente el `.env` antes de ejecutar.
+- Si hay errores con Prisma, ejecuta nuevamente:
+
+```bash
+bunx prisma generate
+```
+
+---
+
+## 12. Posibles Mejoras
+
+- Implementación de autenticación (JWT)
+- Roles y permisos
+- Tests automatizados
+- Dockerización completa
+- Paginación y filtros avanzados
+- UI más refinada
+
+---
