@@ -41,3 +41,14 @@ export interface IAllReservationsVariables {
   limit: number;
   filter?: IReservationFilterInput;
 }
+
+export interface IReservationsByUserResponse {
+  reservationsByUser: IPaginated<IReservation>;
+}
+
+export interface IReservationsByUserVariables {
+  userId: string;
+  page: number;
+  limit: number;
+  filter?: IReservationFilterInput;
+}
