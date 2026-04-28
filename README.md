@@ -15,13 +15,13 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 │   ├── prisma/
 │   │   ├── migrations/
 │   │   ├── schema.prisma
-│   │   └── seed.ts
+│   │   └── seed.ts       # Semillas de usuarios y libros
 │   ├── src/
 │   │   ├── book/
 │   │   ├── generated/
 │   │   ├── prisma/
 │   │   ├── reservation/
-│   │   ├── user/
+│   │   ├── user/         # La estructura descrita en user es la misma para los demas modulos
 │   │   │   ├── dto/
 │   │   │   ├── user.model.ts
 │   │   │   ├── user.module.ts
@@ -35,10 +35,10 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 │   │   ├── components/
 │   │   ├── constants/
 │   │   ├── containers/
-│   │   │   ├── layout/
-│   │   │   └── pages/
+│   │   │   ├── layout/   # Componentes para la estructura de la pagina
+│   │   │   └── pages/    # Componente de la lógica de negocio (crear libro, crear usuario, etc)
 │   │   ├── graphql/
-│   │   │   ├── queries/
+│   │   │   ├── queries/  # Queries y mutaciones del API con Graphql
 │   │   │   └── apolloClient.ts
 │   │   ├── hooks/
 │   │   ├── interfaces/
