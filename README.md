@@ -100,7 +100,9 @@ VITE_API_URL=http://localhost:3000/graphql
 
 ## 6. Instalación y Ejecución
 
-### 6.1 Backend
+### 6.1 Docker
+
+### 6.2 Backend
 
 1. Ir al directorio:
 
@@ -111,28 +113,35 @@ cd backend
 2. Instalar dependencias:
 
 ```bash
-npm install
+bun install
 ```
 
 o
 
 ```bash
-bun install
+npm install
 ```
 
-3. Generar cliente de Prisma:
+3. Crea el archivo .env
+
+```env
+DATABASE_URL="postgresql://root:root@localhost:5432/postgres"
+PORT=3000
+```
+
+4. Generar cliente de Prisma:
 
 ```bash
 bunx prisma generate
 ```
 
-4. Ejecutar migraciones:
+5. Ejecutar migraciones:
 
 ```bash
 bunx prisma migrate dev
 ```
 
-5. (Opcional) Ejecutar seed:
+6. (Recomendación) Ejecutar seed:
 
 ```bash
 bunx prisma db seed
@@ -141,7 +150,7 @@ bunx prisma db seed
 6. Iniciar servidor:
 
 ```bash
-npm run start:dev
+bun run start:dev
 ```
 
 El backend correrá en:
@@ -191,12 +200,12 @@ http://localhost:5173
 ### Backend
 
 ```bash
-npm run start:dev     # Desarrollo
-npm run build         # Build producción
-npm run start:prod    # Ejecutar build
-npm run prisma:generate
-npm run prisma:migrate
-npm run prisma:studio
+bun run start:dev     # Desarrollo
+bun run build         # Build producción
+bun run start:prod    # Ejecutar build
+bun run prisma:generate # Generar el cliente de prisma
+bun run prisma:migrate  # Realizar las migraciones de prisma a la base de datos
+bun run prisma:seed:bun # Ejecutar las semillas
 ```
 
 ### Frontend
