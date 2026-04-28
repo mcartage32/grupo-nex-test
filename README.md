@@ -291,6 +291,6 @@ bunx prisma generate
 - Docker multi-stage para optimización de imagen
 - Manejo centralizado de errores
 - Filtros avanzados en GraphQL
-- UI más refinada
+- Mejora de UI/UX y diseño responsive avanzado
   
 ---
