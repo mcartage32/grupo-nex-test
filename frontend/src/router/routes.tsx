@@ -1,7 +1,8 @@
 import { PUBLIC_ROUTE } from "@/constants";
-//import { lazy } from "react";
+import { lazy } from "react";
 
-// const Login = lazy(() => import("@/containers/pages/auth/Login"));
+// eslint-disable-next-line react-refresh/only-export-components
+const AllUsers = lazy(() => import("@/containers/pages/AllUsers"));
 // const Dashboard = lazy(() => import("@/containers/pages/dashboard"));
 // const Appointments = lazy(() => import("@/containers/pages/appointments"));
 // const Reports = lazy(() => import("@/containers/pages/reports"));
@@ -17,7 +18,7 @@ export const publicRoutes: {
 }[] = [
   {
     path: PUBLIC_ROUTE.USERS,
-    component: () => <div>Usuarios</div>,
+    component: AllUsers,
   },
   {
     path: PUBLIC_ROUTE.BOOKS,

@@ -1,25 +1,24 @@
 import type { ColumnsType } from "antd/es/table";
-import { Button, Table } from "antd";
+import { Button, Table, Tag } from "antd";
 import { useState } from "react";
 import { useQuery } from "@apollo/client/react";
-import { GET_AVAILABLE_BOOKS } from "@/graphql/queries";
+import { GET_ALL_USERS_PAGINATED } from "@/graphql/queries/users";
 import type {
-  IBook,
-  IGetAvailableBooksResponse,
-  IGetAvailableBooksVariables,
+  IUser,
+  IFindAllUsersResponse,
+  IFindAllUsersVariables,
 } from "@/interfaces";
-import CreateReservationModal from "./CreateReservationModal";
+import CreateUserModal from "./CreateUserModal";
 
-const AvailableBooks = () => {
+const AllUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  const [selectedBook, setSelectedBook] = useState("");
-  const [openCreateReservationModal, setOpenReservationModal] = useState(false);
+  const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
   const { data, loading } = useQuery<
-    IGetAvailableBooksResponse,
-    IGetAvailableBooksVariables
-  >(GET_AVAILABLE_BOOKS, {
+    IFindAllUsersResponse,
+    IFindAllUsersVariables
+  >(GET_ALL_USERS_PAGINATED, {
     variables: {
       page: currentPage,
       limit: pageSize,
@@ -27,39 +26,34 @@ const AvailableBooks = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  const columns: ColumnsType<IBook> = [
+  const columns: ColumnsType<IUser> = [
     {
       title: "#",
       key: "index",
+      align: "center",
       render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+    },
+    {
+      title: "Nombre",
+      dataIndex: "name",
+      key: "name",
       align: "center",
     },
     {
-      title: "Título",
-      dataIndex: "title",
-      key: "title",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       align: "center",
     },
     {
-      title: "Autor",
-      dataIndex: "author",
-      key: "author",
+      title: "Estado",
+      dataIndex: "isBanned",
+      key: "isBanned",
       align: "center",
-    },
-    {
-      title: "Acciones",
-      key: "actions",
-      align: "center",
-      render: (_, record) => (
-        <Button
-          type="primary"
-          onClick={() => {
-            setSelectedBook(record.id);
-            setOpenReservationModal(true);
-          }}
-        >
-          Reservar
-        </Button>
+      render: (isBanned: boolean) => (
+        <Tag color={isBanned ? "red" : "green"}>
+          {isBanned ? "Bloqueado" : "Activo"}
+        </Tag>
       ),
     },
   ];
@@ -69,18 +63,23 @@ const AvailableBooks = () => {
       <div className="w-full px-4 md:px-8 py-6">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
           <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
-            Libros disponibles
+            Usuarios
           </h2>
+          <div className="flex justify-end mb-4">
+            <Button type="primary" onClick={() => setOpenCreateUserModal(true)}>
+              Crear usuario
+            </Button>
+          </div>
           <Table
-            dataSource={data?.availableBooks?.data}
+            dataSource={data?.findAllUsers?.data}
             columns={columns}
             rowKey="id"
             loading={loading}
-            locale={{ emptyText: "No hay libros disponibles" }}
+            locale={{ emptyText: "No hay usuarios registrados" }}
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total: data?.availableBooks?.total || 0,
+              total: data?.findAllUsers?.total || 0,
               onChange: (page) => setCurrentPage(page),
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20", "50"],
@@ -95,14 +94,13 @@ const AvailableBooks = () => {
             }}
           />
         </div>
-        <CreateReservationModal
-          open={openCreateReservationModal}
-          onClose={() => setOpenReservationModal(false)}
-          selectedBook={selectedBook}
-        />
       </div>
+      <CreateUserModal
+        open={openCreateUserModal}
+        onClose={() => setOpenCreateUserModal(false)}
+      />
     </>
   );
 };
 
-export default AvailableBooks;
+export default AllUsers;

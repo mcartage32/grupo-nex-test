@@ -15,13 +15,15 @@ export default function ContentCustom() {
     <Content
       style={{
         height: "100dvh",
-        overflow: "hidden",
       }}
     >
       <div
         style={{
           height: "100%",
           padding: 24,
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden", // importante
           background: colorBgContainer,
           borderRadius: borderRadiusLG,
         }}
