@@ -1,8 +1,9 @@
 # OLECRAM - Sistema de Gestión de Reservas de Libros
+> Sistema fullstack para gestión de reservas de libros construido con NestJS, GraphQL, Prisma y React.
 
 ## 1. Descripción del Proyecto
 
-OLECRAM es una aplicación web fullstack diseñada para la gestión de reservas de libros. Permite registrar, consultar y administrar reservas de manera eficiente mediante una arquitectura desacoplada entre frontend y backend.
+OLECRAM es una aplicación web fullstack diseñada para la gestión de reservas de libros. Permite registrar, consultar y administrar reservas de manera eficiente mediante una arquitectura desacoplada entre frontend y backend, facilitando escalabilidad y mantenibilidad.
 
 El sistema está construido con tecnologías modernas como **React**, **NestJS**, **GraphQL** y **PostgreSQL**, priorizando escalabilidad, mantenibilidad y buena experiencia de desarrollo.
 
@@ -253,7 +254,7 @@ Las pruebas actuales validan:
 - Penalización de usuarios por devoluciones tardías
 
 Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema y 
-validan comportamientos críticos del dominio.
+validan comportamientos críticos del dominio y reglas de negocio.
 
 ### Estrategia de testing
 
@@ -279,8 +280,7 @@ bunx prisma generate
 ## 10. Acceso rápido
 
 - Frontend: http://localhost:5173  
-- Backend (GraphQL): http://localhost:3000/graphql  
-- Playground GraphQL disponible en la misma URL del backend
+- Backend (GraphQL + Playground): http://localhost:3000/graphql  
 
 ---
 ## 11. Posibles Mejoras
