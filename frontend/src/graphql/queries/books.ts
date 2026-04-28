@@ -66,3 +66,13 @@ export const DELETE_BOOK = gql`
     }
   }
 `;
+
+export const ALL_BOOKS_WITHOUT_PAGINATION = gql`
+  query AllbooksWithoutPagination {
+    booksWithoutPagination {
+      id
+      title
+      author
+    }
+  }
+`;

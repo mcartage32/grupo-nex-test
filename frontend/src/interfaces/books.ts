@@ -1,4 +1,4 @@
-import type { IPaginated } from ".";
+import type { IPaginated, IReservation, IReservationFilterInput } from ".";
 
 export interface IBook {
   id: string;
@@ -54,4 +54,19 @@ export interface IBookDetailResponse {
 
 export interface IBookDetailVariables {
   id: string;
+}
+
+export interface IReservationsByBookResponse {
+  reservationsByBook: IPaginated<IReservation>;
+}
+
+export interface IReservationsByBookVariables {
+  bookId: string;
+  page: number;
+  limit: number;
+  filter?: IReservationFilterInput;
+}
+
+export interface IBooksWithoutPaginationResponse {
+  booksWithoutPagination: IBook[];
 }
