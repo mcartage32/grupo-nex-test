@@ -13,6 +13,8 @@ import { Reservation } from './reservation.model.js';
 import { Book } from '../book/book.model.js';
 import { User } from '../user/user.model.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { PaginatedReservations } from './dto/paginated-reservations.output.js';
+import { FindManyReservationsArgs } from './dto/find-many-reservation.args.js';
 
 @Resolver(() => Reservation)
 export class ReservationResolver {
@@ -47,11 +49,9 @@ export class ReservationResolver {
     return this.service.reservationsByUser(userId, filter);
   }
 
-  @Query(() => [Reservation])
-  allReservations(
-    @Args('filter', { nullable: true }) filter?: ReservationFilterInput,
-  ) {
-    return this.service.allReservations(filter);
+  @Query(() => PaginatedReservations)
+  allReservations(@Args() args: FindManyReservationsArgs) {
+    return this.service.allReservations(args);
   }
 
   @ResolveField(() => Book)

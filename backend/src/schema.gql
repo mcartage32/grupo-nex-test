@@ -54,6 +54,14 @@ type PaginatedBooks {
   totalPages: Int!
 }
 
+type PaginatedReservations {
+  data: [Reservation!]!
+  limit: Int!
+  page: Int!
+  total: Int!
+  totalPages: Int!
+}
+
 type PaginatedUsers {
   data: [User!]!
   limit: Int!
@@ -63,7 +71,7 @@ type PaginatedUsers {
 }
 
 type Query {
-  allReservations(filter: ReservationFilterInput): [Reservation!]!
+  allReservations(filter: ReservationFilterInput, limit: Int = 10, page: Int = 1): PaginatedReservations!
   availableBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   availableUsers: [User!]!
   book(id: String!): Book
