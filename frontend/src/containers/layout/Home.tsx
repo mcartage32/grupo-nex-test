@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Layout } from "antd";
 import { Grid, Button } from "antd";
-import { MenuUnfoldOutlined } from "@ant-design/icons";
 import SiderCustom from "./SiderCustom";
 import ContentCustom from "./ContentCustom";
 
@@ -23,7 +22,17 @@ export default function Home() {
       {!screens.lg && collapsed && (
         <Button
           type="primary"
-          icon={<MenuUnfoldOutlined />}
+          icon={
+            <img
+              src="/olecram-icon.png"
+              alt="menu"
+              style={{
+                width: 110,
+                height: 110,
+                objectFit: "contain",
+              }}
+            />
+          }
           onClick={() => setCollapsed(false)}
           style={{
             position: "fixed",
@@ -39,9 +48,10 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#1e3a8a",
+            color: "white",
             fontSize: 22,
             boxShadow: "0 6px 16px rgba(0, 0, 0, 0.25)",
+            backgroundColor: "#1e3a8a",
           }}
         />
       )}

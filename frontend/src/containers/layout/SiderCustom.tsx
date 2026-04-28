@@ -42,14 +42,20 @@ export default function SiderCustom({
       }}
       width={215}
     >
-      <div
-        style={{
-          height: 80,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <div className="flex flex-row items-center justify-center gap-2 h-[80px]">
+        {collapsed ? (
+          <></>
+        ) : (
+          <img
+            src={"/olecram-icon.png"}
+            alt="OLECRAM"
+            style={{
+              height: collapsed ? 80 : 100,
+              transition: "0.3s",
+            }}
+          />
+        )}
+
         <Button
           type="text"
           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
