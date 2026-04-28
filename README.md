@@ -40,7 +40,7 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 │   │   │   └── pages/    # Componente de la lógica de negocio (crear libro, crear usuario, etc)
 │   │   ├── graphql/
 │   │   │   ├── queries/  # Queries y mutaciones del API con Graphql
-│   │   │   └── apolloClient.ts
+│   │   │   └── apolloClient.ts # Configuracion del Apollo Client
 │   │   ├── hooks/
 │   │   ├── interfaces/
 │   │   ├── router/
@@ -291,6 +291,7 @@ bunx prisma generate
 - Docker multi-stage para optimización de imagen
 - Manejo centralizado de errores
 - Filtros avanzados en GraphQL
+- Creacion de hooks personalizados para los queries y mutaciones de GraphQL
 - Mejora de UI/UX y diseño responsive avanzado
   
 ---
