@@ -38,6 +38,7 @@ export default function CreateReservationModal({
       label: `${user.name} (${user.email})`,
       value: user.id,
     })) || [];
+
   const [createReservation, { loading: creating }] = useMutation<
     ICreateReservationResponse,
     ICreateReservationVariables
@@ -83,7 +84,7 @@ export default function CreateReservationModal({
           "Ha ocurrido un error inesperado";
 
         createNotification.error({
-          message: "Error al registrar la reserva",
+          title: "Error al registrar la reserva",
           description: translatedMessage,
         });
       },
@@ -122,7 +123,7 @@ export default function CreateReservationModal({
           <DatePicker
             style={{ width: "100%" }}
             disabledDate={(current) =>
-              current && current <= dayjs().startOf("day")
+              current && current < dayjs().startOf("day")
             }
             onChange={() => {
               form.setFieldsValue({ returnDate: null });
@@ -141,11 +142,9 @@ export default function CreateReservationModal({
             style={{ width: "100%" }}
             disabledDate={(current) => {
               const reservationDate = form.getFieldValue("reservationDate");
-
               if (!reservationDate) {
                 return current && current < dayjs().startOf("day");
               }
-
               return current && current <= reservationDate.startOf("day");
             }}
             allowClear

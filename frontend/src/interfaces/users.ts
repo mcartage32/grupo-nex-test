@@ -1,3 +1,5 @@
+import type { IPaginated } from ".";
+
 export interface IUserOption {
   id: string;
   name: string;
@@ -18,12 +20,7 @@ export interface IUser extends IUserOption {
 }
 
 export interface IFindAllUsersResponse {
-  findAllUsers: {
-    data: IUser[];
-    total: number;
-    page: number;
-    totalPages: number;
-  };
+  findAllUsers: IPaginated<IUser>;
 }
 
 export interface IFindAllUsersVariables {

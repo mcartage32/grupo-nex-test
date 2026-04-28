@@ -3,9 +3,8 @@ import { lazy } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllUsers = lazy(() => import("@/containers/pages/AllUsers"));
-// const Dashboard = lazy(() => import("@/containers/pages/dashboard"));
-// const Appointments = lazy(() => import("@/containers/pages/appointments"));
-// const Reports = lazy(() => import("@/containers/pages/reports"));
+// eslint-disable-next-line react-refresh/only-export-components
+const AllBooks = lazy(() => import("@/containers/pages/AllBooks"));
 
 // Rutas públicas
 export const publicRoutes: {
@@ -22,7 +21,7 @@ export const publicRoutes: {
   },
   {
     path: PUBLIC_ROUTE.BOOKS,
-    component: () => <div>Libros</div>,
+    component: AllBooks,
   },
   {
     path: PUBLIC_ROUTE.RESERVATIONS_BY_USER,
