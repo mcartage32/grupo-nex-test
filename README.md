@@ -35,7 +35,7 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 │   │   ├── components/
 │   │   ├── constants/
 │   │   ├── containers/
-│   │   │   ├── layout/   # Componentes para la estructura de la pagina
+│   │   │   ├── layout/   # Componentes para la estructura de la aplicación
 │   │   │   └── pages/    # Componente de la lógica de negocio (crear libro, crear usuario, etc)
 │   │   ├── graphql/
 │   │   │   ├── queries/  # Queries y mutaciones del API con Graphql
@@ -102,7 +102,7 @@ VITE_API_URL=http://localhost:3000/graphql
 
 ### 6.1 Instalación y ejecución con Docker
 
-> **Nota:** Luego de clonar el repositorio, se recomienda crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
+> **Nota:** Luego de clonar el repositorio, se debe crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
 
 
 Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
@@ -252,7 +252,8 @@ Las pruebas actuales validan:
 - Límite máximo de reservas activas por usuario
 - Penalización de usuarios por devoluciones tardías
 
-Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema.
+Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema y 
+validan comportamientos críticos del dominio.
 
 ### Estrategia de testing
 
@@ -267,13 +268,8 @@ Estas pruebas aseguran la integridad de las reglas de negocio principales del si
 - No se implementa autenticación.
 - El sistema está pensado para entorno de desarrollo/prueba.
 - Asegúrate de tener configurado correctamente el `.env` antes de ejecutar.
-- Si hay errores con Prisma, ejecuta nuevamente:
-
-```bash
-bunx prisma generate
-```
 - Prisma Client se genera automáticamente en Docker durante el build.
-- Si trabajas en local, debes ejecutar manualmente:
+- Si trabajas en local o si hay errores con Prisma, debes ejecutar manualmente:
 
 ```bash
 bunx prisma generate
@@ -286,5 +282,15 @@ bunx prisma generate
 - Backend (GraphQL): http://localhost:3000/graphql  
 - Playground GraphQL disponible en la misma URL del backend
 
+---
+## 11. Posibles Mejoras
 
+- Implementación de autenticación (JWT)
+- Control de acceso basado en roles y permisos
+- Tests e2e para flujos completos
+- Docker multi-stage para optimización de imagen
+- Manejo centralizado de errores
+- Filtros avanzados en GraphQL
+- UI más refinada
+  
 ---
