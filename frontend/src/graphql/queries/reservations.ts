@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_RESERVATIONS = gql`
-  query {
+  query GetAllReservations {
     allReservations {
       id
       reservationDate
@@ -17,6 +17,14 @@ export const GET_RESERVATIONS = gql`
         title
         author
       }
+    }
+  }
+`;
+
+export const CREATE_RESERVATION = gql`
+  mutation CreateReservation($data: CreateReservationInput!) {
+    createReservation(data: $data) {
+      id
     }
   }
 `;
