@@ -2,8 +2,9 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateReservationInput } from './dto/create-reservation.input.js';
 import { Prisma } from '../generated/prisma/client.js';
-import { ReservationFilterInput } from './dto/reservation-filters.input.js';
 import { FindManyReservationsArgs } from './dto/find-many-reservation.args.js';
+import { ReservationByUserArgs } from './dto/reservation-by-user.args.js';
+import { ReservationByBookArgs } from './dto/reservation-by-book.args.js';
 
 function toDateOnly(date: Date) {
   return date.toISOString().split('T')[0];
@@ -170,57 +171,81 @@ export class ReservationService {
   }
 
   // Reservas por libro
-  async reservationsByBook(bookId: string, filter?: ReservationFilterInput) {
+  async reservationsByBook(args: ReservationByBookArgs) {
+    const page = args.page ?? 1;
+    const limit = args.limit ?? 10;
+    const skip = (page - 1) * limit;
+
     const where: Prisma.ReservationWhereInput = {
-      bookId,
+      bookId: args.bookId,
       reservationDate: {
-        gte: filter?.startDate,
-        lte: filter?.endDate,
+        gte: args.filter?.startDate,
+        lte: args.filter?.endDate,
       },
     };
 
-    return (
-      this.prisma.reservation
-        .findMany({
-          where,
-          include: {
-            user: true,
-            book: true,
-          },
-          orderBy: {
-            reservationDate: 'desc',
-          },
-        })
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        .then((data) => data.map(getReservationMeta))
-    );
+    const [data, total] = await Promise.all([
+      this.prisma.reservation.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          book: true,
+          user: true,
+        },
+        orderBy: {
+          reservationDate: 'desc',
+        },
+      }),
+      this.prisma.reservation.count({ where }),
+    ]);
+
+    return {
+      data: data.map(getReservationMeta),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   // Reservas por usuario
-  async reservationsByUser(userId: string, filter?: ReservationFilterInput) {
+  async reservationsByUser(args: ReservationByUserArgs) {
+    const page = args.page ?? 1;
+    const limit = args.limit ?? 10;
+    const skip = (page - 1) * limit;
+
     const where: Prisma.ReservationWhereInput = {
-      userId,
+      userId: args.userId,
       reservationDate: {
-        gte: filter?.startDate,
-        lte: filter?.endDate,
+        gte: args.filter?.startDate,
+        lte: args.filter?.endDate,
       },
     };
 
-    return (
-      this.prisma.reservation
-        .findMany({
-          where,
-          include: {
-            book: true,
-            user: true,
-          },
-          orderBy: {
-            reservationDate: 'desc',
-          },
-        })
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        .then((data) => data.map(getReservationMeta))
-    );
+    const [data, total] = await Promise.all([
+      this.prisma.reservation.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          book: true,
+          user: true,
+        },
+        orderBy: {
+          reservationDate: 'desc',
+        },
+      }),
+      this.prisma.reservation.count({ where }),
+    ]);
+
+    return {
+      data: data.map(getReservationMeta),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async allReservations(args: FindManyReservationsArgs) {

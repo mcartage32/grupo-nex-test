@@ -78,8 +78,8 @@ type Query {
   booksWithoutPagination: [Book!]!
   findAllBooks(limit: Int = 10, page: Int = 1, where: BookWhereInput): PaginatedBooks!
   findAllUsers(limit: Int = 10, page: Int = 1): PaginatedUsers!
-  reservationsByBook(bookId: String!, filter: ReservationFilterInput): [Reservation!]!
-  reservationsByUser(filter: ReservationFilterInput, userId: String!): [Reservation!]!
+  reservationsByBook(bookId: String!, filter: ReservationFilterInput, limit: Int! = 10, page: Int! = 1): PaginatedReservations!
+  reservationsByUser(filter: ReservationFilterInput, limit: Int! = 10, page: Int! = 1, userId: String!): PaginatedReservations!
   user(id: String!): User
   usersWithoutPagination: [User!]!
 }

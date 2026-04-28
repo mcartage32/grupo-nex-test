@@ -9,6 +9,10 @@ const AllBooks = lazy(() => import("@/containers/pages/AllBooks"));
 const AllReservations = lazy(
   () => import("@/containers/pages/AllReservations"),
 );
+// eslint-disable-next-line react-refresh/only-export-components
+const ReservationByUser = lazy(
+  () => import("@/containers/pages/ReservationByUser"),
+);
 
 // Rutas públicas
 export const publicRoutes: {
@@ -33,7 +37,7 @@ export const publicRoutes: {
   },
   {
     path: PUBLIC_ROUTE.RESERVATIONS_BY_USER,
-    component: () => <div>Reservas por Usuario</div>,
+    component: ReservationByUser,
   },
   {
     path: PUBLIC_ROUTE.RESERVATIONS_BY_BOOK,
