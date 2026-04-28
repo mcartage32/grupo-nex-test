@@ -11,17 +11,40 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 ## 2. Estructura del Proyecto
 
 ```text
-OLECRAM/
 ├── backend/
-│   ├── src/
 │   ├── prisma/
-│   ├── package.json
-│   └── .env
+│   │   ├── migrations/
+│   │   ├── schema.prisma
+│   │   └── seed.ts
+│   ├── src/
+│   │   ├── book/
+│   │   ├── generated/
+│   │   ├── prisma/
+│   │   ├── reservation/
+│   │   ├── user/
+│   │   │   ├── dto/
+│   │   │   ├── user.model.ts
+│   │   │   ├── user.module.ts
+│   │   │   ├── user.resolver.ts
+│   │   │   └── user.service.ts
+│   │   ├── app.module.ts
+│   │   ├── main.ts
+│   │   └── schema.gql
 ├── frontend/
 │   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── .env
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── containers/
+│   │   │   ├── layout/
+│   │   │   └── pages/
+│   │   ├── graphql/
+│   │   │   ├── queries/
+│   │   │   └── apolloClient.ts
+│   │   ├── hooks/
+│   │   ├── interfaces/
+│   │   ├── router/
+│   │   ├── main.css
+│   │   └── main.tsx
 └── README.md
 ```
 
