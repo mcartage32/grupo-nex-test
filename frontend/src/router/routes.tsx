@@ -31,6 +31,10 @@ export const publicRoutes: {
     path: PUBLIC_ROUTE.RESERVATIONS_BY_BOOK,
     component: () => <div>Reservas por Libro</div>,
   },
+  {
+    path: PUBLIC_ROUTE.RESERVATIONS_GENERAL,
+    component: () => <div>Reservas General</div>,
+  },
   //   {
   //     path: PRIVATE_ROUTE.PROSPECTS,
   //     component: ProspectManagement,

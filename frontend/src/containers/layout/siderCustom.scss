@@ -80,3 +80,26 @@
 .ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
   background-color: transparent !important;
 }
+
+/* Fondo del popup del submenu */
+.ant-menu-submenu-popup .ant-menu {
+  background-color: #0f172a !important; /* o el color que uses en sidebar */
+  border-radius: 10px;
+}
+
+/* Items dentro del popup */
+.ant-menu-submenu-popup .ant-menu-item {
+  color: #fff !important;
+}
+
+/* Hover de items del popup */
+.ant-menu-submenu-popup .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+}
+
+/* Item seleccionado en popup */
+.ant-menu-submenu-popup .ant-menu-item-selected {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+}

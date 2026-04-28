@@ -7,6 +7,7 @@ import { FaBook } from "react-icons/fa";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { LuUserRoundCheck } from "react-icons/lu";
 import { LuNotebookPen } from "react-icons/lu";
+import { MdOutlineBallot } from "react-icons/md";
 
 interface Props {
   selectedKey: string;
@@ -27,6 +28,9 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
         break;
       case "3":
         navigate(PUBLIC_ROUTE.BOOKS);
+        break;
+      case "4":
+        navigate(PUBLIC_ROUTE.RESERVATIONS_GENERAL);
         break;
       case "5":
         navigate(PUBLIC_ROUTE.RESERVATIONS_BY_USER);
@@ -63,10 +67,15 @@ export default function MenuSider({ selectedKey, setSelectedKey }: Props) {
           label: "Libros",
         },
         {
-          key: "4",
+          key: "333",
           icon: <FaRegCalendarCheck size={18} />,
           label: "Reservas",
           children: [
+            {
+              key: "4",
+              icon: <MdOutlineBallot size={18} />,
+              label: "General",
+            },
             {
               key: "5",
               icon: <LuUserRoundCheck size={18} />,
