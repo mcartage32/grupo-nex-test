@@ -100,7 +100,13 @@ VITE_API_URL=http://localhost:3000/graphql
 
 ## 6. Instalación y Ejecución
 
-### 6.1 Docker
+### 6.1 Instalación y ejecución con Docker
+
+Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
+
+```bash
+docker compose up --build
+```
 
 ### 6.2 Backend
 
