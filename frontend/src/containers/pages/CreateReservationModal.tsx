@@ -93,7 +93,16 @@ export default function CreateReservationModal({
   if (loading) return <LoaderPage />;
 
   return (
-    <Modal title="Crear reserva" open={open} onCancel={onClose} footer={null}>
+    <Modal
+      title={
+        <div className="w-full text-center text-lg font-semibold">
+          Crear reserva
+        </div>
+      }
+      open={open}
+      onCancel={onClose}
+      footer={null}
+    >
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         {/* Usuario */}
         <Form.Item
