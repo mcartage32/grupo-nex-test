@@ -18,7 +18,7 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 │   │   └── seed.ts       # Semillas de usuarios y libros
 │   ├── src/
 │   │   ├── book/
-│   │   ├── generated/
+│   │   ├── generated/   # Cliente generado por Prisma (no modificar manualmente)
 │   │   ├── prisma/
 │   │   ├── reservation/
 │   │   ├── user/         # La estructura descrita en user es la misma para los demas modulos
@@ -102,6 +102,9 @@ VITE_API_URL=http://localhost:3000/graphql
 
 ### 6.1 Instalación y ejecución con Docker
 
+> **Nota:** Luego de clonar el repositorio, se debe crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
+> En el backend si se ejecuta con docker DB_HOST debe tener el valor de "db", si es de manera local su valor sera "localhost"
+
 Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
 
 ```bash
@@ -153,7 +156,7 @@ bunx prisma migrate dev
 bunx prisma db seed
 ```
 
-6. Iniciar servidor:
+7. Iniciar servidor:
 
 ```bash
 bun run start:dev
@@ -167,7 +170,7 @@ http://localhost:3000/graphql
 
 ---
 
-### 6.2 Frontend
+### 6.3 Frontend
 
 1. Ir al directorio:
 
@@ -221,10 +224,38 @@ bun dev               # Desarrollo
 bun build             # Build
 bun preview           # Preview producción
 ```
+---
+## 8. Pruebas Unitarias
+
+El proyecto incluye pruebas unitarias en el backend enfocadas en la lógica de negocio del módulo de reservas.  
+Se utiliza Jest junto con el entorno de testing de NestJS, mockeando el PrismaService para aislar la lógica.
+
+### Ejecutar tests
+
+Desde la carpeta del backend:
+
+```bash
+bun test
+```
+
+### Cobertura de pruebas
+
+Las pruebas actuales validan:
+
+- Restricción de libros ya reservados
+- Límite máximo de reservas activas por usuario
+- Penalización de usuarios por devoluciones tardías
+
+Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema.
+
+### Estrategia de testing
+
+- Se mockea PrismaService para evitar dependencia de base de datos
+- Se prueban únicamente reglas de negocio (no infraestructura)
+- Se utilizan excepciones de NestJS para validar errores esperados
 
 ---
-
-## 8. Notas Finales
+## 9. Notas Finales
 
 - PostgreSQL está corriendo localmente en el puerto 5432.
 - No se implementa autenticación.
@@ -235,5 +266,19 @@ bun preview           # Preview producción
 ```bash
 bunx prisma generate
 ```
+- Prisma Client se genera automáticamente en Docker durante el build.
+- Si trabajas en local, debes ejecutar manualmente:
+
+```bash
+bunx prisma generate
+```
+---
+
+## 10. Acceso rápido
+
+- Frontend: http://localhost:5173  
+- Backend (GraphQL): http://localhost:3000/graphql  
+- Playground GraphQL disponible en la misma URL del backend
+
 
 ---
