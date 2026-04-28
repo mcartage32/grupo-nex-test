@@ -102,8 +102,8 @@ VITE_API_URL=http://localhost:3000/graphql
 
 ### 6.1 Instalación y ejecución con Docker
 
-> **Nota:** Luego de clonar el repositorio, se debe crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
-> En el backend si se ejecuta con docker DB_HOST debe tener el valor de "db", si es de manera local su valor sera "localhost"
+> **Nota:** Luego de clonar el repositorio, se recomienda crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
+
 
 Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
 
@@ -190,7 +190,13 @@ o
 npm install
 ```
 
-3. Ejecutar proyecto:
+3. Crear archivo .env
+
+```env
+VITE_API_URL=http://localhost:3000/graphql
+```
+
+4. Ejecutar proyecto:
 
 ```bash
 bun dev
