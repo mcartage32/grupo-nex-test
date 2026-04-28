@@ -32,20 +32,24 @@ const AvailableBooks = () => {
       title: "#",
       key: "index",
       render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+      align: "center",
     },
     {
       title: "Título",
       dataIndex: "title",
       key: "title",
+      align: "center",
     },
     {
       title: "Autor",
       dataIndex: "author",
       key: "author",
+      align: "center",
     },
     {
       title: "Acciones",
       key: "actions",
+      align: "center",
       render: (_, record) => (
         <Button
           type="primary"
@@ -62,34 +66,38 @@ const AvailableBooks = () => {
 
   return (
     <>
-      <div className="card-table">
-        <h2 className="leads-form-title">Libros disponibles</h2>
-        <Table
-          dataSource={data?.availableBooks?.data}
-          columns={columns}
-          rowKey="id"
-          loading={loading}
-          locale={{ emptyText: "No hay libros disponibles" }}
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: data?.availableBooks?.total || 0,
-            onChange: (page) => setCurrentPage(page),
-            showSizeChanger: true,
-            pageSizeOptions: ["5", "10", "20", "50"],
-            onShowSizeChange: (_, size) => {
-              setPageSize(size);
-              setCurrentPage(1);
-            },
-          }}
-          scroll={{ x: 300 }}
+      <div className="w-full px-4 md:px-8 py-6">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
+          <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
+            Libros disponibles
+          </h2>
+          <Table
+            dataSource={data?.availableBooks?.data}
+            columns={columns}
+            rowKey="id"
+            loading={loading}
+            locale={{ emptyText: "No hay libros disponibles" }}
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: data?.availableBooks?.total || 0,
+              onChange: (page) => setCurrentPage(page),
+              showSizeChanger: true,
+              pageSizeOptions: ["5", "10", "20", "50"],
+              onShowSizeChange: (_, size) => {
+                setPageSize(size);
+                setCurrentPage(1);
+              },
+            }}
+            scroll={{ x: "max-content" }}
+          />
+        </div>
+        <CreateReservationModal
+          open={openCreateReservationModal}
+          onClose={() => setOpenReservationModal(false)}
+          selectedBook={selectedBook}
         />
       </div>
-      <CreateReservationModal
-        open={openCreateReservationModal}
-        onClose={() => setOpenReservationModal(false)}
-        selectedBook={selectedBook}
-      />
     </>
   );
 };
