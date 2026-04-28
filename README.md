@@ -186,50 +186,16 @@ bun preview           # Preview producción
 
 ---
 
-## 8. Uso del Sistema
-
-- El frontend consume la API GraphQL del backend.
-- Todas las operaciones (queries/mutations) se realizan mediante Apollo Client.
-- El sistema permite gestionar reservas de libros, incluyendo creación, consulta y eliminación.
-
----
-
-## 9. Consideraciones Técnicas
-
-- Se utiliza **GraphQL** para mayor flexibilidad en consultas.
-- Prisma maneja la persistencia y migraciones de base de datos.
-- Validaciones implementadas con `class-validator`.
-- Manejo de fechas con librerías modernas como `dayjs`.
-
----
-
-## 10. Supuestos
+## 8. Notas Finales
 
 - PostgreSQL está corriendo localmente en el puerto 5432.
-- No se implementa autenticación avanzada (puede extenderse).
+- No se implementa autenticación.
 - El sistema está pensado para entorno de desarrollo/prueba.
-- No se contemplan roles ni permisos complejos.
-
----
-
-## 11. Notas Finales
-
 - Asegúrate de tener configurado correctamente el `.env` antes de ejecutar.
 - Si hay errores con Prisma, ejecuta nuevamente:
 
 ```bash
 bunx prisma generate
 ```
-
----
-
-## 12. Posibles Mejoras
-
-- Implementación de autenticación (JWT)
-- Roles y permisos
-- Tests automatizados
-- Dockerización completa
-- Paginación y filtros avanzados
-- UI más refinada
 
 ---
