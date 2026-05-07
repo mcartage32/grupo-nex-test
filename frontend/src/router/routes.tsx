@@ -2,14 +2,16 @@
 import { PUBLIC_ROUTE } from "@/constants";
 import { lazy } from "react";
 
-const AllUsers = lazy(() => import("@/features/pages/AllUsers"));
-const AllBooks = lazy(() => import("@/features/pages/AllBooks"));
-const AllReservations = lazy(() => import("@/features/pages/AllReservations"));
+const AllUsers = lazy(() => import("@/features/users/pages/AllUsers"));
+const AllBooks = lazy(() => import("@/features/books/pages/AllBooks"));
+const AllReservations = lazy(
+  () => import("@/features/reservations/pages/AllReservations"),
+);
 const ReservationByUser = lazy(
-  () => import("@/features/pages/ReservationByUser"),
+  () => import("@/features/reservations/pages/ReservationByUser"),
 );
 const ReservationByBook = lazy(
-  () => import("@/features/pages/ReservationByBook"),
+  () => import("@/features/reservations/pages/ReservationByBook"),
 );
 
 export const publicRoutes: {
