@@ -287,6 +287,10 @@ La entidad `User` contiene una columna booleana llamada `isBanned`.
 - Los usuarios baneados no aparecen en el selector de usuarios al momento de crear una reserva.
 - Actualmente, el estado de baneo solo puede revertirse manualmente desde base de datos.
 
+#### Restricción de edición de libros alquilados
+
+La edición de libros que actualmente se encuentran alquilados fue deshabilitada desde el frontend. Esta decisión fue asumida como una regla visual y funcional, considerando que modificar información relevante de un libro mientras existe una reserva activa no parecía necesario ni lógico para este contexto de prueba. Dependiendo del caso de uso o necesidades del negocio, esta funcionalidad puede habilitarse o ajustarse posteriormente sin afectar la arquitectura actual del sistema.
+
 ---
 
 ## 10. Acceso rápido
