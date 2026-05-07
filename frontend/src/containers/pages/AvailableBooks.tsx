@@ -8,7 +8,7 @@ import type {
   IGetAvailableBooksResponse,
   IGetAvailableBooksVariables,
 } from "@/interfaces";
-import CreateReservationModal from "./CreateReservationModal";
+import CreateReservationModal from "../../components/reservations/CreateReservationModal";
 
 const AvailableBooks = () => {
   const [currentPage, setCurrentPage] = useState(1);

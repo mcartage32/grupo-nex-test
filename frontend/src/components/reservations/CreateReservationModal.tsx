@@ -5,14 +5,14 @@ import {
   GET_AVAILABLE_USERS,
   GET_AVAILABLE_BOOKS,
 } from "@/graphql/queries";
-import { createNotification } from "@/components/NotificationCustom";
+import { createNotification } from "@/components/common/NotificationCustom";
 import type {
   ICreateReservationResponse,
   ICreateReservationVariables,
   IGetAvailableUsersResponse,
 } from "@/interfaces";
 import { API_ERROR_MESSAGES } from "@/constants/apiErrors";
-import LoaderPage from "@/components/LoaderPage";
+import LoaderPage from "@/components/common/LoaderPage";
 import dayjs from "dayjs";
 
 interface Props {

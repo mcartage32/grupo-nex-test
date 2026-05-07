@@ -1,19 +1,15 @@
+/* eslint-disable react-refresh/only-export-components */
 import { PUBLIC_ROUTE } from "@/constants";
 import { lazy } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const AllUsers = lazy(() => import("@/containers/pages/AllUsers"));
-// eslint-disable-next-line react-refresh/only-export-components
 const AllBooks = lazy(() => import("@/containers/pages/AllBooks"));
-// eslint-disable-next-line react-refresh/only-export-components
 const AllReservations = lazy(
   () => import("@/containers/pages/AllReservations"),
 );
-// eslint-disable-next-line react-refresh/only-export-components
 const ReservationByUser = lazy(
   () => import("@/containers/pages/ReservationByUser"),
 );
-// eslint-disable-next-line react-refresh/only-export-components
 const ReservationByBook = lazy(
   () => import("@/containers/pages/ReservationByBook"),
 );

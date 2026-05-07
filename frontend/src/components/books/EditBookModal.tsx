@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { BOOK_DETAIL, UPDATE_BOOK, GET_ALL_BOOKS } from "@/graphql/queries";
 import type { IBookDetailResponse, IBookDetailVariables } from "@/interfaces";
-import { createNotification } from "@/components/NotificationCustom";
-import LoaderPage from "@/components/LoaderPage";
+import { createNotification } from "@/components/common/NotificationCustom";
+import LoaderPage from "@/components/common/LoaderPage";
 
 interface Props {
   open: boolean;

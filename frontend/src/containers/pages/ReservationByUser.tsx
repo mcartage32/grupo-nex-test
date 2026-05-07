@@ -9,7 +9,7 @@ import type {
 } from "@/interfaces";
 import { RESERVATIONS_BY_USER } from "@/graphql/queries";
 import { GET_AVAILABLE_USERS } from "@/graphql/queries";
-import { getReservationColumns } from "./ReservationColumns";
+import { getReservationColumns } from "../../components/reservations/ReservationColumns";
 import { useReturnBook } from "@/hooks";
 
 const ReservationByUser = () => {

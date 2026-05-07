@@ -7,7 +7,7 @@ import type {
   IAllReservationsVariables,
 } from "@/interfaces";
 import type { Dayjs } from "dayjs";
-import { getReservationColumns } from "./ReservationColumns";
+import { getReservationColumns } from "../../components/reservations/ReservationColumns";
 import { useReturnBook } from "@/hooks";
 
 const AllReservations = () => {

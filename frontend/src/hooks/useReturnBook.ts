@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client/react";
 import { RETURN_BOOK } from "@/graphql/queries";
-import { createNotification } from "@/components/NotificationCustom";
+import { createNotification } from "@/components/common/NotificationCustom";
 
 interface UseReturnBookProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,7 +1,7 @@
 import type { ICreateBookResponse, ICreateBookVariables } from "@/interfaces";
 import { Modal, Form, Input, Button } from "antd";
 import { useMutation } from "@apollo/client/react";
-import { createNotification } from "@/components/NotificationCustom";
+import { createNotification } from "@/components/common/NotificationCustom";
 import { CREATE_BOOK, GET_ALL_BOOKS } from "@/graphql/queries";
 
 interface Props {

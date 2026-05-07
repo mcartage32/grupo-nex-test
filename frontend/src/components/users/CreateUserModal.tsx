@@ -2,7 +2,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_USER } from "@/graphql/queries/users";
 import type { ICreateUserResponse, ICreateUserVariables } from "@/interfaces";
-import { createNotification } from "@/components/NotificationCustom";
+import { createNotification } from "@/components/common/NotificationCustom";
 import { GET_ALL_USERS_PAGINATED } from "@/graphql/queries/users";
 
 interface Props {

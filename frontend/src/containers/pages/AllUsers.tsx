@@ -8,7 +8,7 @@ import type {
   IFindAllUsersResponse,
   IFindAllUsersVariables,
 } from "@/interfaces";
-import CreateUserModal from "./CreateUserModal";
+import CreateUserModal from "../../components/users/CreateUserModal";
 
 const AllUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);

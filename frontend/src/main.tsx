@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ApolloProvider } from "@apollo/client/react";
-import { NotificationProvider } from "./components/NotificationCustom.tsx";
+import { NotificationProvider } from "./components/common/NotificationCustom.tsx";
 import { ConfigProvider } from "antd";
 import esES from "antd/locale/es_ES";
 import Router from "./router/index.tsx";

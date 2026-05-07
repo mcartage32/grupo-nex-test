@@ -8,10 +8,10 @@ import { Button, Popconfirm, Space, Table, Tag, Tooltip } from "antd";
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { DELETE_BOOK, GET_ALL_BOOKS } from "@/graphql/queries";
-import { createNotification } from "@/components/NotificationCustom";
+import { createNotification } from "@/components/common/NotificationCustom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import CreateBookModal from "./CreateBookModal";
-import EditBookModal from "./EditBookModal";
+import CreateBookModal from "../../components/books/CreateBookModal";
+import EditBookModal from "../../components/books/EditBookModal";
 
 const AllBooks = () => {
   const [currentPage, setCurrentPage] = useState(1);
