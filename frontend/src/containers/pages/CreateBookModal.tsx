@@ -28,14 +28,14 @@ export default function CreateBookModal({ open, onClose }: Props) {
     createBook({
       variables: {
         data: {
-          title: values.title,
-          author: values.author,
+          title: values.title.trim(),
+          author: values.author.trim(),
         },
       },
       onCompleted: () => {
         createNotification.success({
           title: "Libro creado",
-          description: "El lirbo se creó correctamente",
+          description: "El libro se creó correctamente",
         });
 
         form.resetFields();
@@ -63,7 +63,23 @@ export default function CreateBookModal({ open, onClose }: Props) {
         <Form.Item
           label="Título"
           name="title"
-          rules={[{ required: true, message: "El título es obligatorio" }]}
+          rules={[
+            {
+              required: true,
+              message: "El título es obligatorio",
+            },
+            {
+              validator: (_, value) => {
+                if (!value || value.trim().length === 0) {
+                  return Promise.reject(
+                    new Error("El título no puede contener solo espacios"),
+                  );
+                }
+
+                return Promise.resolve();
+              },
+            },
+          ]}
         >
           <Input placeholder="Ingrese el título" />
         </Form.Item>
@@ -71,7 +87,23 @@ export default function CreateBookModal({ open, onClose }: Props) {
         <Form.Item
           label="Autor"
           name="author"
-          rules={[{ required: true, message: "El autor es obligatorio" }]}
+          rules={[
+            {
+              required: true,
+              message: "El autor es obligatorio",
+            },
+            {
+              validator: (_, value) => {
+                if (!value || value.trim().length === 0) {
+                  return Promise.reject(
+                    new Error("El autor no puede contener solo espacios"),
+                  );
+                }
+
+                return Promise.resolve();
+              },
+            },
+          ]}
         >
           <Input placeholder="Ingrese el autor" />
         </Form.Item>
