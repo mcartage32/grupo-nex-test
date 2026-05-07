@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateUserInput } from './dto/create-user.input.js';
 import { FindManyUsersArgs } from './dto/find-many-users.args.js';
@@ -61,6 +61,40 @@ export class UserService {
       orderBy: {
         createdAt: 'desc',
       },
+    });
+  }
+
+  async validateUserCanReserve(userId: string) {
+    const user = await this.findOne(userId);
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (user.isBanned) {
+      throw new BadRequestException(
+        'User is banned due to overdue reservations',
+      );
+    }
+
+    const activeReservations = await this.prisma.reservation.count({
+      where: {
+        userId,
+        returned: false,
+      },
+    });
+
+    if (activeReservations >= 3) {
+      throw new BadRequestException('This user already has 3 books reserved');
+    }
+
+    return user;
+  }
+
+  async banUser(userId: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { isBanned: true },
     });
   }
 }

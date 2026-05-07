@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateBookInput } from './dto/create-book.input.js';
 import { UpdateBookInput } from './dto/update-book.input.js';
@@ -133,5 +133,18 @@ export class BookService {
         createdAt: 'desc',
       },
     });
+  }
+
+  async validateBookAvailability(bookId: string) {
+    const activeReservation = await this.prisma.reservation.findFirst({
+      where: {
+        bookId,
+        returned: false,
+      },
+    });
+
+    if (activeReservation) {
+      throw new BadRequestException('This book is already reserved');
+    }
   }
 }

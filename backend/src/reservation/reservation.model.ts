@@ -1,4 +1,6 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { Book } from '../book/book.model.js';
+import { User } from '../user/user.model.js';
 
 @ObjectType()
 export class Reservation {
@@ -25,6 +27,12 @@ export class Reservation {
 
   @Field({ nullable: true })
   returnedAt?: Date;
+
+  @Field(() => Book)
+  book!: Book;
+
+  @Field(() => User)
+  user!: User;
 
   // campos calculados para frontend
 

@@ -5,33 +5,27 @@ import { Prisma } from '../generated/prisma/client.js';
 import { FindManyReservationsArgs } from './dto/find-many-reservation.args.js';
 import { ReservationByUserArgs } from './dto/reservation-by-user.args.js';
 import { ReservationByBookArgs } from './dto/reservation-by-book.args.js';
+import { UserService } from '../user/user.service.js';
+import { BookService } from '../book/book.service.js';
+import {
+  calculateLateReservation,
+  diffDays,
+  nowColombia,
+  toDateOnly,
+  todayColombia,
+} from '../common/utils/dates.utils.js';
+import { validateDates } from '../common/utils/reservation.utils.js';
 
-// Tomar la fecha sin el "T" de UTC
-function toDateOnly(date: Date) {
-  return date.toISOString().split('T')[0];
-}
-
-function todayColombia() {
-  const formatter = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Bogota',
-  });
-  return formatter.format(new Date());
-}
-
-function diffDays(a: string, b: string) {
-  return Math.floor(
-    (new Date(a).getTime() - new Date(b).getTime()) / (1000 * 60 * 60 * 24),
-  );
-}
+type ReservationWithRelations = Prisma.ReservationGetPayload<{
+  include: typeof reservationInclude;
+}>;
 
 // Formatear las fechas (sin horas ni minutos) y se agrega los dia de retraso
 // y dias que falta para entregar el libro
-function getReservationMeta(reservation: any) {
+function getReservationMeta(reservation: ReservationWithRelations) {
   const today = todayColombia();
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   const returnDate = toDateOnly(new Date(reservation.returnDate));
   const daysLeft = diffDays(returnDate, today);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...reservation,
     daysLeft,
@@ -40,72 +34,63 @@ function getReservationMeta(reservation: any) {
   };
 }
 
+const reservationInclude = {
+  book: true,
+  user: true,
+};
+
 @Injectable()
 export class ReservationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private userService: UserService,
+    private bookService: BookService,
+  ) {}
+
+  private getPagination(args: { page?: number; limit?: number }) {
+    const page = args.page ?? 1;
+    const limit = args.limit ?? 10;
+    return {
+      page,
+      limit,
+      skip: (page - 1) * limit,
+    };
+  }
+
+  private buildDateFilter(filter?: { startDate?: Date; endDate?: Date }) {
+    return {
+      reservationDate: {
+        gte: filter?.startDate,
+        lte: filter?.endDate,
+      },
+    };
+  }
+
+  private buildPaginatedResponse(
+    data: ReservationWithRelations[],
+    total: number,
+    page: number,
+    limit: number,
+  ) {
+    return {
+      data: data.map(getReservationMeta),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
 
   async create(data: CreateReservationInput) {
     const { userId, bookId, returnDate, reservationDate } = data;
 
-    // validar que el usuario no esté baneado por reservas vencidas
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    // Validar que el usuario pueda reservar (no esté baneado o tenga multas pendientes)
+    await this.userService.validateUserCanReserve(userId);
+    // Validar que el libro esté disponible para reservar
+    await this.bookService.validateBookAvailability(bookId);
+    // Validar las fechas de reserva y devolución
+    validateDates(reservationDate.toString(), returnDate.toString());
 
-    if (user?.isBanned) {
-      throw new BadRequestException(
-        'User is banned due to overdue reservations',
-      );
-    }
-
-    // validar que el libro no tenga reserva activa
-    const activeReservation = await this.prisma.reservation.findFirst({
-      where: {
-        bookId,
-        returned: false,
-      },
-    });
-
-    if (activeReservation) {
-      throw new BadRequestException('This book is already reserved');
-    }
-
-    // validar máximo 3 reservas activas por usuario
-    const userReservations = await this.prisma.reservation.count({
-      where: {
-        userId,
-        returned: false,
-      },
-    });
-
-    if (userReservations >= 3) {
-      throw new BadRequestException('This user already has 3 books reserved');
-    }
-
-    const reservation = toDateOnly(new Date(reservationDate));
-    const returnD = toDateOnly(new Date(returnDate));
-    const today = todayColombia();
-
-    // validar que la fecha de devolución sea futura (no se puede hoy)
-    if (returnD <= today) {
-      throw new BadRequestException(
-        'The return date must be greater than the current date',
-      );
-    }
-
-    // validar que la fecha de reserva no sea en el pasado
-    if (reservation < today) {
-      throw new BadRequestException(
-        'The reservation date cannot be in the past',
-      );
-    }
-
-    // validar que la fecha de devolución sea mayor a la fecha de reserva
-    if (returnD <= reservation) {
-      throw new BadRequestException(
-        'The return date must be greater than the reservation date',
-      );
-    }
     // crear reserva
     return this.prisma.reservation.create({
       data: {
@@ -114,10 +99,7 @@ export class ReservationService {
         returnDate,
         reservationDate,
       },
-      include: {
-        book: true,
-        user: true,
-      },
+      include: reservationInclude,
     });
   }
 
@@ -135,38 +117,22 @@ export class ReservationService {
       throw new BadRequestException('The book has already been returned');
     }
 
-    // Se hacen los calculos de dias si ha sido retrasado en la entrega del libro
-    // para multar al ususario
-    const today = todayColombia();
-    const returnDate = toDateOnly(new Date(reservation.returnDate));
-    const diffDays = Math.floor(
-      (new Date(returnDate).getTime() - new Date(today).getTime()) /
-        (1000 * 60 * 60 * 24),
+    const { isLate, lateDays } = calculateLateReservation(
+      reservation.returnDate,
     );
-    const isLate = diffDays < 0;
-    const lateDays = isLate ? Math.abs(diffDays) : 0;
 
     const updated = await this.prisma.reservation.update({
       where: { id: reservationId },
       data: {
         returned: true,
-        returnedAt: new Date(
-          new Intl.DateTimeFormat('en-CA', {
-            timeZone: 'America/Bogota',
-          }).format(new Date()),
-        ),
+        returnedAt: nowColombia(),
       },
       include: { book: true, user: true },
     });
 
     // Si esta retrasado se multa el usuario
     if (isLate) {
-      await this.prisma.user.update({
-        where: { id: reservation.userId },
-        data: {
-          isBanned: true,
-        },
-      });
+      await this.userService.banUser(reservation.userId);
     }
 
     return {
@@ -178,16 +144,11 @@ export class ReservationService {
 
   // Reservas por libro
   async reservationsByBook(args: ReservationByBookArgs) {
-    const page = args.page ?? 1;
-    const limit = args.limit ?? 10;
-    const skip = (page - 1) * limit;
+    const { page, limit, skip } = this.getPagination(args);
 
     const where: Prisma.ReservationWhereInput = {
       bookId: args.bookId,
-      reservationDate: {
-        gte: args.filter?.startDate,
-        lte: args.filter?.endDate,
-      },
+      ...this.buildDateFilter(args.filter),
     };
 
     const [data, total] = await Promise.all([
@@ -195,10 +156,7 @@ export class ReservationService {
         where,
         skip,
         take: limit,
-        include: {
-          book: true,
-          user: true,
-        },
+        include: reservationInclude,
         orderBy: {
           reservationDate: 'desc',
         },
@@ -206,27 +164,16 @@ export class ReservationService {
       this.prisma.reservation.count({ where }),
     ]);
 
-    return {
-      data: data.map(getReservationMeta),
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    return this.buildPaginatedResponse(data, total, page, limit);
   }
 
   // Reservas por usuario
   async reservationsByUser(args: ReservationByUserArgs) {
-    const page = args.page ?? 1;
-    const limit = args.limit ?? 10;
-    const skip = (page - 1) * limit;
+    const { page, limit, skip } = this.getPagination(args);
 
     const where: Prisma.ReservationWhereInput = {
       userId: args.userId,
-      reservationDate: {
-        gte: args.filter?.startDate,
-        lte: args.filter?.endDate,
-      },
+      ...this.buildDateFilter(args.filter),
     };
 
     const [data, total] = await Promise.all([
@@ -234,10 +181,7 @@ export class ReservationService {
         where,
         skip,
         take: limit,
-        include: {
-          book: true,
-          user: true,
-        },
+        include: reservationInclude,
         orderBy: {
           reservationDate: 'desc',
         },
@@ -245,25 +189,14 @@ export class ReservationService {
       this.prisma.reservation.count({ where }),
     ]);
 
-    return {
-      data: data.map(getReservationMeta),
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    return this.buildPaginatedResponse(data, total, page, limit);
   }
 
   async allReservations(args: FindManyReservationsArgs) {
-    const page = args.page ?? 1;
-    const limit = args.limit ?? 10;
-    const skip = (page - 1) * limit;
+    const { page, limit, skip } = this.getPagination(args);
 
     const where: Prisma.ReservationWhereInput = {
-      reservationDate: {
-        gte: args.filter?.startDate,
-        lte: args.filter?.endDate,
-      },
+      ...this.buildDateFilter(args.filter),
     };
 
     const [data, total] = await Promise.all([
@@ -271,10 +204,7 @@ export class ReservationService {
         where,
         skip,
         take: limit,
-        include: {
-          book: true,
-          user: true,
-        },
+        include: reservationInclude,
         orderBy: {
           reservationDate: 'desc',
         },
@@ -282,12 +212,6 @@ export class ReservationService {
       this.prisma.reservation.count({ where }),
     ]);
 
-    return {
-      data: data.map(getReservationMeta),
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    return this.buildPaginatedResponse(data, total, page, limit);
   }
 }

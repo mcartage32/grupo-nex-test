@@ -10,8 +10,11 @@ import { ReservationModule } from './reservation/reservation.module.js';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      // Habilita GraphiQL para desarrollo
       graphiql: true,
+      // Genera el esquema automáticamente a partir de los decoradores de GraphQL
       autoSchemaFile: 'src/schema.gql',
+      // Ordena el esquema para facilitar la lectura
       sortSchema: true,
     }),
     PrismaModule,
