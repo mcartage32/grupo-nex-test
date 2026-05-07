@@ -112,7 +112,6 @@ input UpdateBookInput {
 }
 
 type User {
-  activeReservations: Float!
   createdAt: DateTime!
   email: String!
   id: ID!

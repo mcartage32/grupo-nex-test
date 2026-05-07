@@ -1,11 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service.js';
 import { User } from './user.model.js';
 import { CreateUserInput } from './dto/create-user.input.js';
@@ -43,15 +36,5 @@ export class UserResolver {
   @Query(() => [User])
   usersWithoutPagination() {
     return this.userService.findAllNoPagination();
-  }
-
-  @ResolveField(() => Number)
-  activeReservations(@Parent() user: User) {
-    return this.prisma.reservation.count({
-      where: {
-        userId: user.id,
-        returned: false,
-      },
-    });
   }
 }
