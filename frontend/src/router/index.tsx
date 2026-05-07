@@ -2,7 +2,7 @@ import { Spin } from "antd";
 import { Suspense, type JSX } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes";
-import Home from "@/containers/layout/Home";
+import Home from "@/features/layout/Home";
 
 const Router = (): JSX.Element => {
   return (

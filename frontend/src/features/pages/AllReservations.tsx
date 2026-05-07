@@ -8,7 +8,7 @@ import type {
 } from "@/interfaces";
 import type { Dayjs } from "dayjs";
 import { getReservationColumns } from "../../components/reservations/ReservationColumns";
-import { useReturnBook } from "@/hooks";
+import { useReturnBook } from "@/hooks/books";
 
 const AllReservations = () => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,9 +1,6 @@
+import { useCreateUser } from "@/hooks/users";
+import { noOnlySpaces } from "@/validators/formValidators";
 import { Modal, Form, Input, Button } from "antd";
-import { useMutation } from "@apollo/client/react";
-import { CREATE_USER } from "@/graphql/queries/users";
-import type { ICreateUserResponse, ICreateUserVariables } from "@/interfaces";
-import { createNotification } from "@/components/common/NotificationCustom";
-import { GET_ALL_USERS_PAGINATED } from "@/graphql/queries/users";
 
 interface Props {
   open: boolean;
@@ -13,43 +10,12 @@ interface Props {
 export default function CreateUserModal({ open, onClose }: Props) {
   const [form] = Form.useForm();
 
-  const [createUser, { loading }] = useMutation<
-    ICreateUserResponse,
-    ICreateUserVariables
-  >(CREATE_USER, {
-    refetchQueries: [
-      {
-        query: GET_ALL_USERS_PAGINATED,
-        variables: { page: 1, limit: 5 },
-      },
-    ],
+  const { handleCreateUser, creating } = useCreateUser({
+    onSuccess: () => {
+      form.resetFields();
+      onClose();
+    },
   });
-
-  const handleSubmit = (values: { name: string; email: string }) => {
-    createUser({
-      variables: {
-        data: {
-          name: values.name,
-          email: values.email,
-        },
-      },
-      onCompleted: () => {
-        createNotification.success({
-          title: "Usuario creado",
-          description: "El usuario se creó correctamente",
-        });
-
-        form.resetFields();
-        onClose();
-      },
-      onError: () => {
-        createNotification.error({
-          title: "Error",
-          description: "No se pudo crear el usuario",
-        });
-      },
-    });
-  };
 
   return (
     <Modal
@@ -60,11 +26,17 @@ export default function CreateUserModal({ open, onClose }: Props) {
         <div className="text-center text-lg font-semibold">Crear usuario</div>
       }
     >
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+      <Form layout="vertical" form={form} onFinish={handleCreateUser}>
         <Form.Item
           label="Nombre"
           name="name"
-          rules={[{ required: true, message: "El nombre es obligatorio" }]}
+          rules={[
+            {
+              required: true,
+              message: "El nombre es obligatorio",
+            },
+            noOnlySpaces("El nombre no puede contener solo espacios"),
+          ]}
         >
           <Input placeholder="Ingrese el nombre" />
         </Form.Item>
@@ -73,14 +45,21 @@ export default function CreateUserModal({ open, onClose }: Props) {
           label="Email"
           name="email"
           rules={[
-            { required: true, message: "El email es obligatorio" },
-            { type: "email", message: "Email inválido" },
+            {
+              required: true,
+              message: "El email es obligatorio",
+            },
+            {
+              type: "email",
+              message: "Email inválido",
+            },
+            noOnlySpaces("El email no puede contener solo espacios"),
           ]}
         >
           <Input placeholder="Ingrese el email" />
         </Form.Item>
 
-        <Button type="primary" htmlType="submit" block loading={loading}>
+        <Button type="primary" htmlType="submit" block loading={creating}>
           Crear usuario
         </Button>
       </Form>

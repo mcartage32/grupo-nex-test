@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { useMutation } from "@apollo/client/react";
 import { createNotification } from "@/components/common/NotificationCustom";
 import { CREATE_BOOK, GET_ALL_BOOKS } from "@/graphql/queries";
+import { noOnlySpaces } from "@/validators/formValidators";
 
 interface Props {
   open: boolean;
@@ -68,17 +69,7 @@ export default function CreateBookModal({ open, onClose }: Props) {
               required: true,
               message: "El título es obligatorio",
             },
-            {
-              validator: (_, value) => {
-                if (!value || value.trim().length === 0) {
-                  return Promise.reject(
-                    new Error("El título no puede contener solo espacios"),
-                  );
-                }
-
-                return Promise.resolve();
-              },
-            },
+            noOnlySpaces("El título no puede contener solo espacios"),
           ]}
         >
           <Input placeholder="Ingrese el título" />
@@ -92,17 +83,7 @@ export default function CreateBookModal({ open, onClose }: Props) {
               required: true,
               message: "El autor es obligatorio",
             },
-            {
-              validator: (_, value) => {
-                if (!value || value.trim().length === 0) {
-                  return Promise.reject(
-                    new Error("El autor no puede contener solo espacios"),
-                  );
-                }
-
-                return Promise.resolve();
-              },
-            },
+            noOnlySpaces("El autor no puede contener solo espacios"),
           ]}
         >
           <Input placeholder="Ingrese el autor" />

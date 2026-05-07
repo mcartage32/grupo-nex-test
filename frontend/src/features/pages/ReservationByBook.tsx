@@ -1,42 +1,42 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client/react";
 import { Table, Select, DatePicker } from "antd";
+import { RESERVATIONS_BY_BOOK } from "@/graphql/queries";
+import { ALL_BOOKS_WITHOUT_PAGINATION } from "@/graphql/queries";
 import type { Dayjs } from "dayjs";
 import type {
-  IReservationsByUserResponse,
-  IReservationsByUserVariables,
-  IGetAvailableUsersResponse,
+  IReservationsByBookResponse,
+  IReservationsByBookVariables,
+  IBooksWithoutPaginationResponse,
 } from "@/interfaces";
-import { RESERVATIONS_BY_USER } from "@/graphql/queries";
-import { GET_AVAILABLE_USERS } from "@/graphql/queries";
 import { getReservationColumns } from "../../components/reservations/ReservationColumns";
-import { useReturnBook } from "@/hooks";
+import { useReturnBook } from "@/hooks/books";
 
-const ReservationByUser = () => {
+const ReservationByBook = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  const [selectedUser, setSelectedUser] = useState<string>("");
+  const [selectedBook, setSelectedBook] = useState<string>("");
   const [dateRange, setDateRange] = useState<
     [Dayjs | null, Dayjs | null] | null
   >(null);
 
-  const { data: usersData } = useQuery<IGetAvailableUsersResponse>(
-    GET_AVAILABLE_USERS,
+  const { data: booksData } = useQuery<IBooksWithoutPaginationResponse>(
+    ALL_BOOKS_WITHOUT_PAGINATION,
     { fetchPolicy: "cache-and-network" },
   );
 
-  const userOptions =
-    usersData?.availableUsers.map((user) => ({
-      label: `${user.name} (${user.email})`,
-      value: user.id,
+  const bookOptions =
+    booksData?.booksWithoutPagination.map((book) => ({
+      label: `${book.title} - ${book.author}`,
+      value: book.id,
     })) || [];
 
   const { data, loading, refetch } = useQuery<
-    IReservationsByUserResponse,
-    IReservationsByUserVariables
-  >(RESERVATIONS_BY_USER, {
+    IReservationsByBookResponse,
+    IReservationsByBookVariables
+  >(RESERVATIONS_BY_BOOK, {
     variables: {
-      userId: selectedUser,
+      bookId: selectedBook,
       page: currentPage,
       limit: pageSize,
       filter: {
@@ -44,7 +44,7 @@ const ReservationByUser = () => {
         endDate: undefined,
       },
     },
-    skip: !selectedUser,
+    skip: !selectedBook,
     fetchPolicy: "cache-and-network",
   });
 
@@ -66,13 +66,13 @@ const ReservationByUser = () => {
     <div className="w-full px-4 md:px-8 py-6">
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-6">
         <h2 className="text-xl font-semibold text-center mb-6">
-          Reservas por usuario
+          Reservas por libro
         </h2>
         <div className="flex justify-center mb-4">
           <Select
-            placeholder="Selecciona un usuario"
-            options={userOptions}
-            style={{ width: 300 }}
+            placeholder="Selecciona un libro"
+            options={bookOptions}
+            style={{ width: 350 }}
             showSearch={{
               optionFilterProp: "label",
               filterOption: (input, option) =>
@@ -82,10 +82,10 @@ const ReservationByUser = () => {
                   .includes(input.toLowerCase()),
             }}
             onChange={(value) => {
-              setSelectedUser(value);
+              setSelectedBook(value);
               setCurrentPage(1);
               refetch({
-                userId: value,
+                bookId: value,
                 page: 1,
                 limit: pageSize,
                 filter: {
@@ -96,21 +96,16 @@ const ReservationByUser = () => {
             }}
           />
         </div>
-
-        {/* FILTRO FECHA */}
         <div className="flex flex-col items-center mb-4">
           <label className="mb-2 text-sm font-medium text-gray-700">
             Filtrar por fecha de reserva
           </label>
-
           <DatePicker.RangePicker
             onChange={(dates) => {
               setDateRange(dates);
-
-              if (!selectedUser) return;
-
+              if (!selectedBook) return;
               refetch({
-                userId: selectedUser,
+                bookId: selectedBook,
                 page: 1,
                 limit: pageSize,
                 filter: {
@@ -123,18 +118,18 @@ const ReservationByUser = () => {
           />
         </div>
         <Table
-          dataSource={data?.reservationsByUser?.data}
+          dataSource={data?.reservationsByBook?.data}
           columns={columns}
           rowKey="id"
           loading={loading}
           pagination={{
             current: currentPage,
             pageSize,
-            total: data?.reservationsByUser?.total || 0,
+            total: data?.reservationsByBook?.total || 0,
             onChange: (page) => {
               setCurrentPage(page);
               refetch({
-                userId: selectedUser,
+                bookId: selectedBook,
                 page,
                 limit: pageSize,
                 filter: {
@@ -149,6 +144,7 @@ const ReservationByUser = () => {
               setPageSize(size);
               setCurrentPage(1);
               refetch({
+                bookId: selectedBook,
                 page: 1,
                 limit: size,
                 filter: {
@@ -168,4 +164,4 @@ const ReservationByUser = () => {
   );
 };
 
-export default ReservationByUser;
+export default ReservationByBook;
