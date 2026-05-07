@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Modal, Form, Input, Button } from "antd";
 import { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
@@ -72,7 +73,6 @@ export default function EditBookModal({ open, onClose, bookId }: Props) {
         author: data.book.author,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, open]);
 
   if (loadingDetail) return <LoaderPage />;

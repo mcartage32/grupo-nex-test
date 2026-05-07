@@ -1,4 +1,3 @@
-// Rutas publicas
 export const PUBLIC_ROUTE = {
   HOME: "/",
   USERS: "/usuarios",

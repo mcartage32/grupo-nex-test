@@ -13,7 +13,8 @@ import type {
 } from "@/interfaces";
 import { API_ERROR_MESSAGES } from "@/constants/apiErrors";
 import LoaderPage from "@/components/common/LoaderPage";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { CombinedGraphQLErrors } from "@apollo/client/errors";
 
 interface Props {
   open: boolean;
@@ -54,8 +55,13 @@ export default function CreateReservationModal({
     ],
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = (values: any) => {
+  interface ReservationFormValues {
+    userId: string;
+    reservationDate: Dayjs;
+    returnDate: Dayjs;
+  }
+
+  const handleSubmit = (values: ReservationFormValues) => {
     createReservation({
       variables: {
         data: {
@@ -73,12 +79,11 @@ export default function CreateReservationModal({
         form.resetFields();
         onClose();
       },
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onError: (error: any) => {
-        const backendMessage =
-          error?.graphQLErrors?.[0]?.message || error?.message || "";
-
+      onError: (error) => {
+        let backendMessage = error.message;
+        if (CombinedGraphQLErrors.is(error)) {
+          backendMessage = error.errors[0]?.message ?? error.message;
+        }
         const translatedMessage =
           API_ERROR_MESSAGES[backendMessage] ||
           "Ha ocurrido un error inesperado";

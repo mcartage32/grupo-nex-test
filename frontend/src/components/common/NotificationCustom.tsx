@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useEffect, type ReactNode } from "react";
 import { notification, type NotificationArgsProps } from "antd";
 import type { NotificationInstance } from "antd/es/notification/interface";
@@ -5,7 +6,6 @@ import type { NotificationInstance } from "antd/es/notification/interface";
 // Referencia global al API de notificaciones
 let notificationRef: NotificationInstance | null = null;
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const createNotification = {
   success: (args: Omit<NotificationArgsProps, "type">) => {
     notificationRef?.success({

@@ -91,7 +91,6 @@ export class ReservationService {
     // Validar las fechas de reserva y devolución
     validateDates(reservationDate.toString(), returnDate.toString());
 
-    // crear reserva
     return this.prisma.reservation.create({
       data: {
         userId,
@@ -142,7 +141,6 @@ export class ReservationService {
     };
   }
 
-  // Reservas por libro
   async reservationsByBook(args: ReservationByBookArgs) {
     const { page, limit, skip } = this.getPagination(args);
 
@@ -167,7 +165,6 @@ export class ReservationService {
     return this.buildPaginatedResponse(data, total, page, limit);
   }
 
-  // Reservas por usuario
   async reservationsByUser(args: ReservationByUserArgs) {
     const { page, limit, skip } = this.getPagination(args);
 

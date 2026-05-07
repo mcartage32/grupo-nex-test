@@ -23,7 +23,7 @@ export default function ContentCustom() {
           padding: 24,
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden", // importante
+          overflow: "hidden",
           background: colorBgContainer,
           borderRadius: borderRadiusLG,
         }}

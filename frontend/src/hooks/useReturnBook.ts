@@ -1,14 +1,22 @@
 import { useMutation } from "@apollo/client/react";
+import { Dayjs } from "dayjs";
 import { RETURN_BOOK } from "@/graphql/queries";
 import { createNotification } from "@/components/common/NotificationCustom";
 
+interface RefetchParams {
+  page: number;
+  limit: number;
+  filter: {
+    startDate?: string;
+    endDate?: string;
+  };
+}
+
 interface UseReturnBookProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  refetch: (params: any) => void;
+  refetch: (params: RefetchParams) => void;
   currentPage: number;
   pageSize: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dateRange: [any, any] | null;
+  dateRange: [Dayjs | null, Dayjs | null] | null;
 }
 
 export const useReturnBook = ({
@@ -27,7 +35,6 @@ export const useReturnBook = ({
           title: "Libro retornado",
           description: "El libro fue devuelto correctamente",
         });
-
         refetch({
           page: currentPage,
           limit: pageSize,
@@ -37,6 +44,7 @@ export const useReturnBook = ({
           },
         });
       },
+
       onError: () => {
         createNotification.error({
           title: "Error",

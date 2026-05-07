@@ -14,7 +14,6 @@ const ReservationByBook = lazy(
   () => import("@/containers/pages/ReservationByBook"),
 );
 
-// Rutas públicas
 export const publicRoutes: {
   path: string;
   component: React.FC;
