@@ -1,4 +1,5 @@
 # OLECRAM - Sistema de Gestión de Reservas de Libros
+
 > Sistema fullstack para gestión de reservas de libros construido con NestJS, GraphQL, Prisma y React.
 
 ## 1. Descripción del Proyecto
@@ -67,7 +68,6 @@ El sistema está construido con tecnologías modernas como **React**, **NestJS**
 - Apollo Client
 - Ant Design
 - TailwindCSS
-- Zustand
 - React Router
 
 ---
@@ -104,7 +104,6 @@ VITE_API_URL=http://localhost:3000/graphql
 ### 6.1 Instalación y ejecución con Docker
 
 > **Nota:** Luego de clonar el repositorio, se debe crear los respectivos archivos .env en las carpetas backend y frontend, con los respectivos valores.
-
 
 Desde la raíz del proyecto, ejecuta el siguiente comando para levantar la base de datos, el backend y el frontend automáticamente:
 
@@ -231,7 +230,9 @@ bun dev               # Desarrollo
 bun build             # Build
 bun preview           # Preview producción
 ```
+
 ---
+
 ## 8. Pruebas Unitarias
 
 El proyecto incluye pruebas unitarias en el backend enfocadas en la lógica de negocio del módulo de reservas.  
@@ -253,7 +254,7 @@ Las pruebas actuales validan:
 - Límite máximo de reservas activas por usuario
 - Penalización de usuarios por devoluciones tardías
 
-Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema y 
+Estas pruebas aseguran la integridad de las reglas de negocio principales del sistema y
 validan comportamientos críticos del dominio y reglas de negocio.
 
 ### Estrategia de testing
@@ -263,6 +264,7 @@ validan comportamientos críticos del dominio y reglas de negocio.
 - Se utilizan excepciones de NestJS para validar errores esperados
 
 ---
+
 ## 9. Notas Finales
 
 - PostgreSQL está corriendo localmente en el puerto 5432.
@@ -275,14 +277,25 @@ validan comportamientos críticos del dominio y reglas de negocio.
 ```bash
 bunx prisma generate
 ```
+
+### Regla de penalización de usuarios
+
+La entidad `User` contiene una columna booleana llamada `isBanned`.
+
+- Cuando un usuario devuelve un libro después de la fecha límite de retorno, el sistema marca automáticamente `isBanned = true`.
+- Un usuario baneado no puede realizar nuevas reservas de libros.
+- Los usuarios baneados no aparecen en el selector de usuarios al momento de crear una reserva.
+- Actualmente, el estado de baneo solo puede revertirse manualmente desde base de datos.
+
 ---
 
 ## 10. Acceso rápido
 
-- Frontend: http://localhost:5173  
-- Backend (GraphQL + Playground): http://localhost:3000/graphql  
+- Frontend: http://localhost:5173
+- Backend (GraphQL + Playground): http://localhost:3000/graphql
 
 ---
+
 ## 11. Posibles Mejoras
 
 - Implementación de autenticación (JWT)
@@ -293,5 +306,5 @@ bunx prisma generate
 - Filtros avanzados en GraphQL
 - Creacion de hooks personalizados para los queries y mutaciones de GraphQL
 - Mejora de UI/UX y diseño responsive avanzado
-  
+
 ---

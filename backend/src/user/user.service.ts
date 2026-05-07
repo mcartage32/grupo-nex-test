@@ -2,15 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateUserInput } from './dto/create-user.input.js';
 import { FindManyUsersArgs } from './dto/find-many-users.args.js';
+import { handlePrismaError } from '../common/errors/prisma-error.handler.js';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: CreateUserInput) {
-    return this.prisma.user.create({
-      data,
-    });
+  async create(data: CreateUserInput) {
+    try {
+      return await this.prisma.user.create({
+        data,
+      });
+    } catch (error) {
+      handlePrismaError(error);
+    }
   }
 
   findAll(args: FindManyUsersArgs) {

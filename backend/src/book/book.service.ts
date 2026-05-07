@@ -4,15 +4,20 @@ import { CreateBookInput } from './dto/create-book.input.js';
 import { UpdateBookInput } from './dto/update-book.input.js';
 import { FindManyBooksArgs } from './dto/find-many-books.args.js';
 import { Prisma } from '../generated/prisma/client.js';
+import { handlePrismaError } from '../common/errors/prisma-error.handler.js';
 
 @Injectable()
 export class BookService {
   constructor(private prisma: PrismaService) {}
 
   create(data: CreateBookInput) {
-    return this.prisma.book.create({
-      data,
-    });
+    try {
+      return this.prisma.book.create({
+        data,
+      });
+    } catch (error) {
+      handlePrismaError(error);
+    }
   }
 
   async findAll(args: FindManyBooksArgs) {
