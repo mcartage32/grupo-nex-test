@@ -1,46 +1,28 @@
 import type { ColumnsType } from "antd/es/table";
-
+import type { IBookWithAvailability } from "../interfaces/books";
 import { Button, Popconfirm, Space, Table, Tag, Tooltip } from "antd";
-import { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client/react";
-import { createNotification } from "@/components/common/NotificationCustom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useAllBooks } from "../hooks/useAllBooks";
 import CreateBookModal from "../components/CreateBookModal";
 import EditBookModal from "../components/EditBookModal";
-import { GET_ALL_BOOKS } from "../graphql/queries";
-import { DELETE_BOOK } from "../graphql/mutations";
-import type {
-  IBookWithAvailability,
-  IGetAllBooksResponse,
-  IGetAllBooksVariables,
-} from "../interfaces/books";
 
 const AllBooks = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-  const [selectedBookId, setSelectedBookId] = useState("");
-  const [openCreateBookModal, setOpenCreateBookModal] = useState(false);
-  const [openEditBookModal, setOpenEditBookModal] = useState(false);
-
-  const { data, loading } = useQuery<
-    IGetAllBooksResponse,
-    IGetAllBooksVariables
-  >(GET_ALL_BOOKS, {
-    variables: {
-      page: currentPage,
-      limit: pageSize,
-    },
-    fetchPolicy: "cache-and-network",
-  });
-
-  const [deleteBook, { loading: deleting }] = useMutation(DELETE_BOOK, {
-    refetchQueries: [
-      {
-        query: GET_ALL_BOOKS,
-        variables: { page: currentPage, limit: pageSize },
-      },
-    ],
-  });
+  const {
+    data,
+    loading,
+    deleting,
+    currentPage,
+    pageSize,
+    setCurrentPage,
+    setPageSize,
+    selectedBookId,
+    openCreateBookModal,
+    setOpenCreateBookModal,
+    openEditBookModal,
+    setOpenEditBookModal,
+    openEditModal,
+    handleDeleteBook,
+  } = useAllBooks();
 
   const columns: ColumnsType<IBookWithAvailability> = [
     {
@@ -79,32 +61,13 @@ const AllBooks = () => {
             <Tooltip title="Editar">
               <EditOutlined
                 style={{ color: "#1677ff", cursor: "pointer", fontSize: 18 }}
-                onClick={() => {
-                  setSelectedBookId(record.id);
-                  setOpenEditBookModal(true);
-                }}
+                onClick={() => openEditModal(record.id)}
               />
             </Tooltip>
             <Popconfirm
               title="¿Eliminar libro?"
               description="Esta acción no se puede deshacer"
-              onConfirm={() => {
-                deleteBook({
-                  variables: { id: record.id },
-                  onCompleted: () => {
-                    createNotification.success({
-                      title: "Libro eliminado",
-                      description: "El libro se eliminó correctamente",
-                    });
-                  },
-                  onError: () => {
-                    createNotification.error({
-                      title: "Error",
-                      description: "No se pudo eliminar el libro",
-                    });
-                  },
-                });
-              }}
+              onConfirm={() => handleDeleteBook(record.id)}
               okText="Sí"
               cancelText="No"
             >

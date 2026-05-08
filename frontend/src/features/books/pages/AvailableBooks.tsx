@@ -1,31 +1,22 @@
 import type { ColumnsType } from "antd/es/table";
+import type { IBook } from "../interfaces/books";
+import { useAvailableBooks } from "../hooks/useAvailableBooks";
 import { Button, Table } from "antd";
-import { useState } from "react";
-import { useQuery } from "@apollo/client/react";
 import CreateReservationModal from "../../reservations/components/CreateReservationModal";
-import { GET_AVAILABLE_BOOKS } from "../graphql/queries";
-import type {
-  IBook,
-  IGetAvailableBooksResponse,
-  IGetAvailableBooksVariables,
-} from "../interfaces/books";
 
 const AvailableBooks = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-  const [selectedBook, setSelectedBook] = useState("");
-  const [openCreateReservationModal, setOpenReservationModal] = useState(false);
-
-  const { data, loading } = useQuery<
-    IGetAvailableBooksResponse,
-    IGetAvailableBooksVariables
-  >(GET_AVAILABLE_BOOKS, {
-    variables: {
-      page: currentPage,
-      limit: pageSize,
-    },
-    fetchPolicy: "cache-and-network",
-  });
+  const {
+    data,
+    loading,
+    currentPage,
+    pageSize,
+    setCurrentPage,
+    setPageSize,
+    selectedBook,
+    openCreateReservationModal,
+    setOpenReservationModal,
+    handleOpenReservationModal,
+  } = useAvailableBooks();
 
   const columns: ColumnsType<IBook> = [
     {
@@ -54,8 +45,7 @@ const AvailableBooks = () => {
         <Button
           type="primary"
           onClick={() => {
-            setSelectedBook(record.id);
-            setOpenReservationModal(true);
+            handleOpenReservationModal(record.id);
           }}
         >
           Reservar
