@@ -82,6 +82,7 @@ export class ReservationService {
   }
 
   async create(data: CreateReservationInput) {
+    // APLICAR TRANSACTION: validar usuario, libro, fechas y crear reserva
     const { userId, bookId, returnDate, reservationDate } = data;
 
     // Validar que el usuario pueda reservar (no esté baneado o tenga multas pendientes)
@@ -103,6 +104,7 @@ export class ReservationService {
   }
 
   async returnBook(reservationId: string) {
+    // APLICAR TRANSACTION: validar reserva, calcular retraso, actualizar reserva y banear usuario si es necesario
     const reservation = await this.prisma.reservation.findUnique({
       where: { id: reservationId },
       include: { user: true },
